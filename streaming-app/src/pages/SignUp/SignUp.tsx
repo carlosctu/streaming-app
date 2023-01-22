@@ -15,6 +15,7 @@ import { ButtonContainer } from "../../componets/ButtonContainer";
 import SocialButtons from "../../componets/SocialButtons";
 import { useNavigate } from "react-router-dom";
 import Lottie from "react-lottie";
+import AppBar from "../../componets/AppBar";
 export default function SignUp() {
   const navigate = useNavigate();
   const [values, setValues] = useState({
@@ -166,15 +167,6 @@ export default function SignUp() {
     </>
   );
 }
-
-const AppBar = styled.div`
-  height: 80px;
-  width: 100%;
-  display: flex;
-  position: fixed;
-  padding: 0 24px;
-  justify-content: start;
-`;
 
 const PageWrapper = styled.main`
   display: flex;

@@ -18,8 +18,9 @@ export default function SocialButtons() {
   ];
   return (
     <ButtonsWrapper>
-      {socialButtons.map((btn) => (
+      {socialButtons.map((btn, index) => (
         <ButtonContainer
+          key={index}
           description={btn.description}
           logoSrc={btn.logoSrc}
           logoAlt={btn.logoAlt}
