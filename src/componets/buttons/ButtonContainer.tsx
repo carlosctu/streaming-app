@@ -8,10 +8,10 @@ export type ButtonProps = {
   logoAlt?: string;
   backgroundColor?: string;
   onClick?: () => void;
-  startAndornment?: JSX.Element;
+  startAndornment?: React.ReactNode;
 };
 
-export function ButtonContainer(props: ButtonProps): JSX.Element {
+export function ButtonContainer(props: ButtonProps) {
   return (
     <ButtonWrapper
       color={props.backgroundColor ?? "#ffffff"}

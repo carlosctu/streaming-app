@@ -5,7 +5,7 @@ export type ButtonIconProps = {
   onClick?: () => void;
   size?: string;
   color?: string;
-  children: JSX.Element;
+  children: React.ReactNode;
 };
 
 export default function ButtonIcon(props: ButtonIconProps) {

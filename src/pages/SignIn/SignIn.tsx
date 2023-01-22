@@ -1,49 +1,29 @@
 import styled from "styled-components";
-
 import "../../assets/styles/typewriter.css";
 import welcome2 from "../../assets/welcome2.json";
 import { HiOutlineMail } from "react-icons/hi";
-import Lottie from "react-lottie";
 import Typewriter from "typewriter-effect";
-import { ButtonContainer } from "../../componets/ButtonContainer";
-import ButtonIcon from "../../componets/ButtonIcon";
-import SocialButtons from "../../componets/SocialButtons";
 import { useNavigate } from "react-router-dom";
+import { useState, useEffect } from "react";
+import LottieIcon from "../../componets/LottieIcon";
+import SocialButtons from "../../componets/buttons/SocialButtons";
+import ButtonIcon from "../../componets/buttons/ButtonIcon";
+import { ButtonContainer } from "../../componets/buttons/ButtonContainer";
 
 export default function SignIn() {
   const navigate = useNavigate();
-  const defaultOptions = {
-    loop: true,
-    autoplay: true,
-    animationData: welcome2,
-    rendererSettings: {
-      preserveAspectRatio: "xMidYMid slice",
-    },
-  };
+  const [play, setPlay] = useState(false);
 
-  const typeWriteStrings = [
-    "The best streaming platform",
-    "All your series and movies in one app!",
-    "One of the fewest platform with no advertisement",
-  ];
+  useEffect(() => {
+    setPlay(true);
+    console.log("ola");
+  }, []);
 
   return (
     <PageWrapper>
-      <div style={{ marginTop: "10vh" }}>
-        <div style={{ height: "24vh", width: "100%" }}>
-          <Lottie options={defaultOptions} />
-        </div>
-        <div style={{ marginTop: "2vh" }}>
-          <Typewriter
-            options={{
-              autoStart: true,
-              loop: true,
-              delay: "natural",
-              strings: typeWriteStrings,
-              wrapperClassName: "typeWriteText",
-            }}
-          />
-        </div>
+      <div style={{ marginTop: "8vh" }}>
+        <LottieIcon animationData={welcome2} height="20vh" />
+        <TypeWriterContainer />
       </div>
       <ButtonsSection>
         <TitlePage>Welcome to AppLogo!</TitlePage>
@@ -78,6 +58,27 @@ export default function SignIn() {
         </div>
       </ButtonsSection>
     </PageWrapper>
+  );
+}
+
+function TypeWriterContainer() {
+  const typeWriteStrings = [
+    "The best streaming platform",
+    "All your series and movies in one app!",
+    "One of the fewest platform with no advertisement",
+  ];
+  return (
+    <div style={{ marginTop: "2vh" }}>
+      <Typewriter
+        options={{
+          autoStart: true,
+          loop: true,
+          delay: "natural",
+          strings: typeWriteStrings,
+          wrapperClassName: "typeWriteText",
+        }}
+      />
+    </div>
   );
 }
 

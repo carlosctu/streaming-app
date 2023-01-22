@@ -1,7 +1,6 @@
 import styled from "styled-components";
 import { BsArrowLeft } from "react-icons/bs";
 import InputAdornment from "@mui/material/InputAdornment";
-import ButtonIcon from "../../componets/ButtonIcon";
 import MailOutlineIcon from "@mui/icons-material/MailOutline";
 import Box from "@mui/material/Box";
 import LockIcon from "@mui/icons-material/Lock";
@@ -11,11 +10,13 @@ import Input from "@mui/material/Input";
 import { IconButton } from "@mui/material";
 import React, { useState } from "react";
 import appLogo from "../../assets/appLogo.json";
-import { ButtonContainer } from "../../componets/ButtonContainer";
-import SocialButtons from "../../componets/SocialButtons";
 import { useNavigate } from "react-router-dom";
-import Lottie from "react-lottie";
 import AppBar from "../../componets/AppBar";
+import LottieIcon from "../../componets/LottieIcon";
+import ButtonIcon from "../../componets/buttons/ButtonIcon";
+import { ButtonContainer } from "../../componets/buttons/ButtonContainer";
+import SocialButtons from "../../componets/buttons/SocialButtons";
+
 export default function SignUp() {
   const navigate = useNavigate();
   const [values, setValues] = useState({
@@ -23,14 +24,6 @@ export default function SignUp() {
     password: "",
     showPassword: false,
   });
-  const defaultOptions = {
-    loop: true,
-    autoplay: true,
-    animationData: appLogo,
-    rendererSettings: {
-      preserveAspectRatio: "xMidYMid slice",
-    },
-  };
 
   const handleSubmit: React.FormEventHandler = (event: React.ChangeEvent) => {
     const { email, password } = values;
@@ -56,16 +49,12 @@ export default function SignUp() {
         <ButtonIcon children={<BsArrowLeft />} onClick={() => navigate("/")} />
       </AppBar>
       <PageWrapper>
-        <div
-          style={{
-            height: "180px",
-            width: "150px",
-            marginTop: "10%",
-            marginBottom: "20px",
-          }}
-        >
-          <Lottie options={defaultOptions} />
-        </div>
+        <LottieIcon
+          animationData={appLogo}
+          height="180px"
+          width="150px"
+          enableLoop={false}
+        />
         <div
           style={{
             marginBottom: "20px",
@@ -86,13 +75,7 @@ export default function SignUp() {
           autoComplete="off"
           onSubmit={handleSubmit}
         >
-          <Box
-            sx={{
-              display: "flex",
-              alignItems: "flex-end",
-              width: "95%",
-            }}
-          >
+          <InputField>
             <MailOutlineIcon sx={{ color: "action.active", mr: 1, my: 0.5 }} />
             <Input
               type={"text"}
@@ -102,14 +85,8 @@ export default function SignUp() {
               onChange={handleChange}
               style={{ width: "100%" }}
             />
-          </Box>
-          <Box
-            sx={{
-              display: "flex",
-              alignItems: "flex-end",
-              width: "95%",
-            }}
-          >
+          </InputField>
+          <InputField>
             <LockIcon sx={{ color: "action.active", mr: 1, my: 0.5 }} />
             <Input
               type={values.showPassword ? "text" : "password"}
@@ -126,7 +103,7 @@ export default function SignUp() {
               }
               style={{ width: "100%" }}
             />
-          </Box>
+          </InputField>
           <ButtonContainer
             height="42px"
             width="95%"
@@ -134,7 +111,6 @@ export default function SignUp() {
             description="Sign in"
           />
         </Box>
-
         <HorizontalLineContainer>
           <HorizontalLine />
           <div
@@ -165,6 +141,24 @@ export default function SignUp() {
         </div>
       </PageWrapper>
     </>
+  );
+}
+
+type InputFieldProps = {
+  children: React.ReactNode;
+};
+
+function InputField(props: InputFieldProps) {
+  return (
+    <Box
+      sx={{
+        display: "flex",
+        alignItems: "flex-end",
+        width: "95%",
+      }}
+    >
+      {props.children}
+    </Box>
   );
 }
 

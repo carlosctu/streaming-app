@@ -1,7 +1,7 @@
 import styled from "styled-components";
 
 export type AppBarProps = {
-  children?: JSX.Element;
+  children?: React.ReactNode;
 };
 export default function AppBar(props: AppBarProps) {
   return <AppBarWrapper>{props.children}</AppBarWrapper>;
