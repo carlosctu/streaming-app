@@ -1,4 +1,4 @@
-import styled, { StyledInterface } from "styled-components";
+import styled from "styled-components";
 
 export type ButtonProps = {
   description: string;
