@@ -3,7 +3,7 @@ import "../../assets/styles/typewriter.css";
 import welcome2 from "../../assets/welcome2.json";
 import { HiOutlineMail } from "react-icons/hi";
 import Typewriter from "typewriter-effect";
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { useState, useEffect } from "react";
 import LottieIcon from "../../componets/LottieIcon";
 import SocialButtons from "../../componets/buttons/SocialButtons";
@@ -37,7 +37,7 @@ export default function SignIn() {
           <ButtonContainer
             description={"Continue with email"}
             backgroundColor={"#D93A41"}
-            onClick={() => navigate("/SignUp")}
+            onClick={() => navigate("/Login")}
             startAndornment={
               <ButtonIcon size="18px" children={<HiOutlineMail />} />
             }
@@ -54,7 +54,7 @@ export default function SignIn() {
           }}
         >
           <p>Don't have an account?</p>
-          <p> Sign up.</p>
+          <StyledLink to="/SignUp">Sign up.</StyledLink>
         </div>
       </ButtonsSection>
     </PageWrapper>
@@ -81,6 +81,14 @@ function TypeWriterContainer() {
     </div>
   );
 }
+
+const StyledLink = styled(Link)`
+  text-decoration: none;
+  color: #d93a41;
+  font-size: 15px;
+  line-height: 17.61px;
+  font-weight: 700;
+`;
 
 const TitlePage = styled.div`
   font-size: 28px;

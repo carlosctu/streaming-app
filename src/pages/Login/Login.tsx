@@ -3,26 +3,25 @@ import { BsArrowLeft } from "react-icons/bs";
 import InputAdornment from "@mui/material/InputAdornment";
 import MailOutlineIcon from "@mui/icons-material/MailOutline";
 import Box from "@mui/material/Box";
+import LockIcon from "@mui/icons-material/Lock";
 import Visibility from "@mui/icons-material/Visibility";
 import VisibilityOff from "@mui/icons-material/VisibilityOff";
 import Input from "@mui/material/Input";
 import { IconButton } from "@mui/material";
 import React, { useState } from "react";
+import appLogo from "../../assets/appLogo.json";
 import { Link, useNavigate } from "react-router-dom";
 import AppBar from "../../componets/AppBar";
+import LottieIcon from "../../componets/LottieIcon";
 import ButtonIcon from "../../componets/buttons/ButtonIcon";
 import { ButtonContainer } from "../../componets/buttons/ButtonContainer";
 import SocialButtons from "../../componets/buttons/SocialButtons";
-import AccountCircleIcon from '@mui/icons-material/AccountCircle';
-import KeyIcon from '@mui/icons-material/Key';
 
-export default function SignUp() {
+export default function Login() {
   const navigate = useNavigate();
   const [values, setValues] = useState({
-    name: "",
     email: "",
     password: "",
-    confirmPassword: "",
     showPassword: false,
   });
 
@@ -50,14 +49,19 @@ export default function SignUp() {
         <ButtonIcon children={<BsArrowLeft />} onClick={() => navigate("/")} />
       </AppBar>
       <PageWrapper>
+        <LottieIcon
+          animationData={appLogo}
+          height="180px"
+          width="150px"
+          enableLoop={false}
+        />
         <div
           style={{
-            marginTop: "10vh",
             marginBottom: "20px",
             fontSize: "24px",
           }}
         >
-          Create your account
+          Login into Your Account
         </div>
         <Box
           component="form"
@@ -65,27 +69,16 @@ export default function SignUp() {
             display: "flex",
             flexDirection: "column",
             alignItems: "center",
-            rowGap: "32px",
+            rowGap: "24px",
             width: "100%",
           }}
           autoComplete="off"
           onSubmit={handleSubmit}
         >
           <InputField>
-            <AccountCircleIcon sx={{ color: "action.active", mr: 1, my: 0.5 }} />
-            <Input
-              type={"text"}
-              value={values.name}
-              name={"name"}
-              placeholder={"How you want to be called"}
-              onChange={handleChange}
-              style={{ width: "100%" }}
-            />
-          </InputField>
-          <InputField>
             <MailOutlineIcon sx={{ color: "action.active", mr: 1, my: 0.5 }} />
             <Input
-              type={"email"}
+              type={"text"}
               value={values.email}
               name={"email"}
               placeholder={"Email"}
@@ -93,32 +86,13 @@ export default function SignUp() {
               style={{ width: "100%" }}
             />
           </InputField>
-         
           <InputField>
-            <KeyIcon sx={{ color: "action.active", mr: 1, my: 0.5 }} />
+            <LockIcon sx={{ color: "action.active", mr: 1, my: 0.5 }} />
             <Input
               type={values.showPassword ? "text" : "password"}
               placeholder={"Password"}
               value={values.password}
               name={"password"}
-              onChange={handleChange}
-              endAdornment={
-                <InputAdornment position="end">
-                  <IconButton onClick={handleShowPassword}>
-                    {values.showPassword ? <VisibilityOff /> : <Visibility />}
-                  </IconButton>
-                </InputAdornment>
-              }
-              style={{ width: "100%" }}
-            />
-          </InputField>
-          <InputField>
-            <KeyIcon sx={{ color: "action.active", mr: 1, my: 0.5 }} />
-            <Input
-              type={values.showPassword ? "text" : "password"}
-              placeholder={"Confirm password"}
-              value={values.confirmPassword}
-              name={"confirmPassword"}
               onChange={handleChange}
               endAdornment={
                 <InputAdornment position="end">
@@ -146,7 +120,7 @@ export default function SignUp() {
               width: "500px",
             }}
           >
-            or sign up with
+            or continue with
           </div>
           <HorizontalLine />
         </HorizontalLineContainer>
@@ -162,8 +136,8 @@ export default function SignUp() {
             marginBottom: "16px",
           }}
         >
-          <p>Already have an account?</p>
-          <StyledLink to="/Login"> Sign in.</StyledLink>
+          <p>Don't have an account?</p>
+          <StyledLink to="/SignUp"> Sign up.</StyledLink>
         </div>
       </PageWrapper>
     </>
