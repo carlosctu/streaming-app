@@ -3,40 +3,54 @@ import { BsArrowLeft } from "react-icons/bs";
 import InputAdornment from "@mui/material/InputAdornment";
 import MailOutlineIcon from "@mui/icons-material/MailOutline";
 import Box from "@mui/material/Box";
-import LockIcon from "@mui/icons-material/Lock";
 import Visibility from "@mui/icons-material/Visibility";
 import VisibilityOff from "@mui/icons-material/VisibilityOff";
 import Input from "@mui/material/Input";
 import { IconButton } from "@mui/material";
 import React, { useState } from "react";
-import appLogo from "../../assets/appLogo.json";
 import { Link, useNavigate } from "react-router-dom";
 import AppBar from "../../componets/AppBar";
-import LottieIcon from "../../componets/LottieIcon";
 import ButtonIcon from "../../componets/buttons/ButtonIcon";
 import { ButtonContainer } from "../../componets/buttons/ButtonContainer";
 import SocialButtons from "../../componets/buttons/SocialButtons";
+import AccountCircleIcon from "@mui/icons-material/AccountCircle";
+import KeyIcon from "@mui/icons-material/Key";
+import { Controller, useForm } from "react-hook-form";
+import useSignUp from "../../hooks/api/useSignUp";
 
-export default function Login() {
+export default function SignUp() {
   const navigate = useNavigate();
   const [values, setValues] = useState({
+    name: "",
     email: "",
     password: "",
+    confirmPassword: "",
     showPassword: false,
   });
-
-  const handleSubmit: React.FormEventHandler = (event: React.ChangeEvent) => {
-    const { email, password } = values;
+  const [notSamePassword, setNotSamePassword] = useState(false);
+  const { signUpLoading, signUp } = useSignUp();
+  const handleSubmit = async (event) => {
     event.preventDefault();
+    setNotSamePassword(false);
+
+    const { name, email, password, confirmPassword } = values;
+
+    if (password != confirmPassword) {
+      return setNotSamePassword(true);
+    }
+    try {
+      await signUp({ name, email, password });
+      navigate('/Login')
+    } catch (error) {
+      console.log(error);
+    }
   };
 
-  const handleChange: React.ChangeEventHandler<HTMLInputElement> = (
-    event: React.ChangeEvent<HTMLInputElement>
-  ) => {
+  const handleChange = (event) => {
     setValues({ ...values, [event.target.name]: event.target.value });
   };
 
-  const handleShowPassword: React.MouseEventHandler = () => {
+  const handleShowPassword = () => {
     setValues({
       ...values,
       showPassword: !values.showPassword,
@@ -49,19 +63,14 @@ export default function Login() {
         <ButtonIcon children={<BsArrowLeft />} onClick={() => navigate("/")} />
       </AppBar>
       <PageWrapper>
-        <LottieIcon
-          animationData={appLogo}
-          height="180px"
-          width="150px"
-          enableLoop={false}
-        />
         <div
           style={{
+            marginTop: "10vh",
             marginBottom: "20px",
             fontSize: "24px",
           }}
         >
-          Login into Your Account
+          Create your account
         </div>
         <Box
           component="form"
@@ -69,16 +78,29 @@ export default function Login() {
             display: "flex",
             flexDirection: "column",
             alignItems: "center",
-            rowGap: "24px",
+            rowGap: "32px",
             width: "100%",
           }}
           autoComplete="off"
-          onSubmit={handleSubmit}
         >
+          <InputField>
+            <AccountCircleIcon
+              sx={{ color: "action.active", mr: 1, my: 0.5 }}
+            />
+            <Input
+              id="outlined-error-helper-text"
+              type={"text"}
+              value={values.name}
+              name={"name"}
+              placeholder={"How you want to be called"}
+              onChange={handleChange}
+              style={{ width: "100%" }}
+            />
+          </InputField>
           <InputField>
             <MailOutlineIcon sx={{ color: "action.active", mr: 1, my: 0.5 }} />
             <Input
-              type={"text"}
+              type={"email"}
               value={values.email}
               name={"email"}
               placeholder={"Email"}
@@ -87,7 +109,7 @@ export default function Login() {
             />
           </InputField>
           <InputField>
-            <LockIcon sx={{ color: "action.active", mr: 1, my: 0.5 }} />
+            <KeyIcon sx={{ color: "action.active", mr: 1, my: 0.5 }} />
             <Input
               type={values.showPassword ? "text" : "password"}
               placeholder={"Password"}
@@ -102,6 +124,26 @@ export default function Login() {
                 </InputAdornment>
               }
               style={{ width: "100%" }}
+              error={notSamePassword}
+            />
+          </InputField>
+          <InputField>
+            <KeyIcon sx={{ color: "action.active", mr: 1, my: 0.5 }} />
+            <Input
+              type={values.showPassword ? "text" : "password"}
+              placeholder={"Confirm password"}
+              value={values.confirmPassword}
+              name={"confirmPassword"}
+              onChange={handleChange}
+              endAdornment={
+                <InputAdornment position="end">
+                  <IconButton onClick={handleShowPassword}>
+                    {values.showPassword ? <VisibilityOff /> : <Visibility />}
+                  </IconButton>
+                </InputAdornment>
+              }
+              style={{ width: "100%" }}
+              error={notSamePassword}
             />
           </InputField>
           <ButtonContainer
@@ -109,6 +151,7 @@ export default function Login() {
             width="95%"
             backgroundColor="#D93A41"
             description="Sign in"
+            onClick={handleSubmit}
           />
         </Box>
         <HorizontalLineContainer>
@@ -120,7 +163,7 @@ export default function Login() {
               width: "500px",
             }}
           >
-            or continue with
+            or sign up with
           </div>
           <HorizontalLine />
         </HorizontalLineContainer>
@@ -136,19 +179,15 @@ export default function Login() {
             marginBottom: "16px",
           }}
         >
-          <p>Don't have an account?</p>
-          <StyledLink to="/SignUp"> Sign up.</StyledLink>
+          <p>Already have an account?</p>
+          <StyledLink to="/Login"> Sign in.</StyledLink>
         </div>
       </PageWrapper>
     </>
   );
 }
 
-type InputFieldProps = {
-  children: React.ReactNode;
-};
-
-function InputField(props: InputFieldProps) {
+function InputField(props) {
   return (
     <Box
       sx={{
