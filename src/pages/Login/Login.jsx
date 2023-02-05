@@ -12,7 +12,7 @@ import React, { useState } from "react";
 import appLogo from "../../assets/appLogo.json";
 import { Link, useNavigate } from "react-router-dom";
 import AppBar from "../../componets/AppBar";
-import LottieIcon from "../../componets/LottieIcon";
+// import LottieIcon from "../../componets/LottieIcon";
 import ButtonIcon from "../../componets/buttons/ButtonIcon";
 import { ButtonContainer } from "../../componets/buttons/ButtonContainer";
 import SocialButtons from "../../componets/buttons/SocialButtons";
@@ -47,12 +47,12 @@ export default function Login() {
         <ButtonIcon children={<BsArrowLeft />} onClick={() => navigate("/")} />
       </AppBar>
       <PageWrapper>
-        <LottieIcon
+        {/* <LottieIcon
           animationData={appLogo}
           height="180px"
           width="150px"
           enableLoop={false}
-        />
+        /> */}
         <div
           style={{
             marginBottom: "20px",
@@ -107,6 +107,7 @@ export default function Login() {
             width="95%"
             backgroundColor="#D93A41"
             description="Sign in"
+            onClick={() => navigate("/home")}
           />
         </Box>
         <HorizontalLineContainer>
@@ -141,7 +142,6 @@ export default function Login() {
     </>
   );
 }
-
 
 function InputField(props) {
   return (

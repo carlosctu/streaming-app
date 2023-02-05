@@ -5,7 +5,7 @@ import { HiOutlineMail } from "react-icons/hi";
 import Typewriter from "typewriter-effect";
 import { Link, useNavigate } from "react-router-dom";
 import { useState, useEffect } from "react";
-import LottieIcon from "../../componets/LottieIcon";
+// import LottieIcon from "../../componets/LottieIcon";
 import SocialButtons from "../../componets/buttons/SocialButtons";
 import ButtonIcon from "../../componets/buttons/ButtonIcon";
 import { ButtonContainer } from "../../componets/buttons/ButtonContainer";
@@ -22,7 +22,7 @@ export default function SignIn() {
   return (
     <PageWrapper>
       <div style={{ marginTop: "8vh" }}>
-        <LottieIcon animationData={welcome2} height="20vh" />
+        {/* <LottieIcon animationData={welcome2} height="20vh" /> */}
         <TypeWriterContainer />
       </div>
       <ButtonsSection>

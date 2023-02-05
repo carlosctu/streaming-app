@@ -26,6 +26,7 @@ export default function SignUp() {
     password: "",
     confirmPassword: "",
     showPassword: false,
+    showConfirmPassword: false,
   });
   const [notSamePassword, setNotSamePassword] = useState(false);
   const { signUpLoading, signUp } = useSignUp();
@@ -50,11 +51,13 @@ export default function SignUp() {
     setValues({ ...values, [event.target.name]: event.target.value });
   };
 
-  const handleShowPassword = () => {
+  const handleShowPassword = (passwordType) => {
+    console.log(passwordType)
     setValues({
       ...values,
-      showPassword: !values.showPassword,
+      [passwordType]: !values[passwordType],
     });
+    console.log(values)
   };
 
   return (
@@ -118,7 +121,7 @@ export default function SignUp() {
               onChange={handleChange}
               endAdornment={
                 <InputAdornment position="end">
-                  <IconButton onClick={handleShowPassword}>
+                  <IconButton onClick={() => handleShowPassword("showPassword")}>
                     {values.showPassword ? <VisibilityOff /> : <Visibility />}
                   </IconButton>
                 </InputAdornment>
@@ -130,15 +133,15 @@ export default function SignUp() {
           <InputField>
             <KeyIcon sx={{ color: "action.active", mr: 1, my: 0.5 }} />
             <Input
-              type={values.showPassword ? "text" : "password"}
+              type={values.showConfirmPassword ? "text" : "password"}
               placeholder={"Confirm password"}
               value={values.confirmPassword}
               name={"confirmPassword"}
               onChange={handleChange}
               endAdornment={
                 <InputAdornment position="end">
-                  <IconButton onClick={handleShowPassword}>
-                    {values.showPassword ? <VisibilityOff /> : <Visibility />}
+                  <IconButton onClick={() => handleShowPassword("showConfirmPassword")}>
+                    {values.showConfirmPassword ? <VisibilityOff /> : <Visibility />}
                   </IconButton>
                 </InputAdornment>
               }
