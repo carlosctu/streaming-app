@@ -1,7 +1,7 @@
 import useAsync from "../useAsync";
 import * as kitsuApi from "../../services/AnimeApi";
 
-export default function useTrendingList() {
+export function useTrendingList() {
   const {
     data: trendingList,
     loading: trendingListLoading,
@@ -14,5 +14,20 @@ export default function useTrendingList() {
     trendingListLoading,
     trendingListError,
     trendingListAct,
+  };
+}
+export function useCategoryList(category) {
+  const {
+    data: categoryList,
+    loading: categoryListLoading,
+    error: categoryListError,
+    act: categoryListAct,
+  } = useAsync(() => kitsuApi.getCategoryList(category));
+
+  return {
+    categoryList,
+    categoryListLoading,
+    categoryListError,
+    categoryListAct,
   };
 }

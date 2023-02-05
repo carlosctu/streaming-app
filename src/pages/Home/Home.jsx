@@ -1,17 +1,20 @@
-import { useEffect, useState } from "react";
 import styled from "styled-components";
-import google from "../../assets/google.png";
-import useTrendingList from "../../hooks/api/useAnime";
-import { trendingList } from "../../services/AnimeApi";
+import { useCategoryList, useTrendingList } from "../../hooks/api/useAnime";
 
 export default function Home() {
+  const categories = Object.freeze({
+    FANTASY: "10",
+    ACTION: "16",
+    ROMANCE: "5",
+    MAGIC: "7",
+  });
   const { trendingList } = useTrendingList();
-  console.log(trendingList);
-  // console.log(trendingList?.data[0].averageRating);
-  //   const [data, setData] = useState(
-  // trendingList.data[0].attributes.coverImage["original"]
-  //   );
-  const rating = "85.5";
+  const fantasyCategory = useCategoryList(categories.FANTASY);
+  const actionCategory = useCategoryList(categories.ACTION);
+  const romanceCategory = useCategoryList(categories.ROMANCE);
+  const magicCategory = useCategoryList(categories.magicCategory);
+  console.log(fantasyCategory.categoryList);
+  //   console.log(trendingList);
   return (
     <HomeWrapper>
       <div>
@@ -21,7 +24,142 @@ export default function Home() {
       <TrendingCarrousel>
         {trendingList?.data.map((data) => {
           const anime = data.attributes;
-          console.log(anime.titles["en"]);
+          return (
+            <div style={{ display: "flex", flexDirection: "column" }}>
+              <TrendingAnimeContainer
+                // coverImage={google}
+                coverImage={anime.posterImage["small"]}
+              >
+                <div>{parseFloat(anime.averageRating / 10).toFixed(1)}</div>
+              </TrendingAnimeContainer>
+              <div
+                style={{
+                  display: "flex",
+                  wordWrap: "break-word",
+                  flexWrap: "wrap",
+                  width: "140px",
+                  height: "80px",
+                  alignContent: "center",
+                  backgroundColor: "#4b6043",
+                  color: "white",
+                  padding: "8px 0 8px 8px",
+                }}
+              >
+                <p style={{ fontSize: "15px" }}>
+                  {anime.titles["en"] === undefined
+                    ? anime.titles["en_jp"]
+                    : anime.titles["en"]}
+                </p>
+              </div>
+            </div>
+          );
+        })}
+      </TrendingCarrousel>
+      <TrendingCarrousel>
+        {fantasyCategory.categoryList?.data.map((data) => {
+          const anime = data.attributes;
+          return (
+            <div style={{ display: "flex", flexDirection: "column" }}>
+              <TrendingAnimeContainer
+                // coverImage={google}
+                coverImage={anime.posterImage["small"]}
+              >
+                <div>{parseFloat(anime.averageRating / 10).toFixed(1)}</div>
+              </TrendingAnimeContainer>
+              <div
+                style={{
+                  display: "flex",
+                  wordWrap: "break-word",
+                  flexWrap: "wrap",
+                  width: "140px",
+                  height: "80px",
+                  alignContent: "center",
+                  backgroundColor: "#4b6043",
+                  color: "white",
+                  padding: "8px 0 8px 8px",
+                }}
+              >
+                <p style={{ fontSize: "15px" }}>
+                  {anime.titles["en"] === undefined
+                    ? anime.titles["en_jp"]
+                    : anime.titles["en"]}
+                </p>
+              </div>
+            </div>
+          );
+        })}
+      </TrendingCarrousel>
+      <TrendingCarrousel>
+        {actionCategory.categoryList?.data.map((data) => {
+          const anime = data.attributes;
+          return (
+            <div style={{ display: "flex", flexDirection: "column" }}>
+              <TrendingAnimeContainer
+                // coverImage={google}
+                coverImage={anime.posterImage["small"]}
+              >
+                <div>{parseFloat(anime.averageRating / 10).toFixed(1)}</div>
+              </TrendingAnimeContainer>
+              <div
+                style={{
+                  display: "flex",
+                  wordWrap: "break-word",
+                  flexWrap: "wrap",
+                  width: "140px",
+                  height: "80px",
+                  alignContent: "center",
+                  backgroundColor: "#4b6043",
+                  color: "white",
+                  padding: "8px 0 8px 8px",
+                }}
+              >
+                <p style={{ fontSize: "15px" }}>
+                  {anime.titles["en"] === undefined
+                    ? anime.titles["en_jp"]
+                    : anime.titles["en"]}
+                </p>
+              </div>
+            </div>
+          );
+        })}
+      </TrendingCarrousel>
+      <TrendingCarrousel>
+        {romanceCategory.categoryList?.data.map((data) => {
+          const anime = data.attributes;
+          return (
+            <div style={{ display: "flex", flexDirection: "column" }}>
+              <TrendingAnimeContainer
+                // coverImage={google}
+                coverImage={anime.posterImage["small"]}
+              >
+                <div>{parseFloat(anime.averageRating / 10).toFixed(1)}</div>
+              </TrendingAnimeContainer>
+              <div
+                style={{
+                  display: "flex",
+                  wordWrap: "break-word",
+                  flexWrap: "wrap",
+                  width: "140px",
+                  height: "80px",
+                  alignContent: "center",
+                  backgroundColor: "#4b6043",
+                  color: "white",
+                  padding: "8px 0 8px 8px",
+                }}
+              >
+                <p style={{ fontSize: "15px" }}>
+                  {anime.titles["en"] === undefined
+                    ? anime.titles["en_jp"]
+                    : anime.titles["en"]}
+                </p>
+              </div>
+            </div>
+          );
+        })}
+      </TrendingCarrousel>
+      <TrendingCarrousel>
+        {magicCategory.categoryList?.data.map((data) => {
+          const anime = data.attributes;
           return (
             <div style={{ display: "flex", flexDirection: "column" }}>
               <TrendingAnimeContainer
