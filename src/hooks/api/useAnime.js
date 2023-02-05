@@ -16,13 +16,13 @@ export function useTrendingList() {
     trendingListAct,
   };
 }
-export function useCategoryList(category) {
+export function useCategoryList(category, sorting) {
   const {
     data: categoryList,
     loading: categoryListLoading,
     error: categoryListError,
     act: categoryListAct,
-  } = useAsync(() => kitsuApi.getCategoryList(category));
+  } = useAsync(() => kitsuApi.getCategoryList(category, sorting));
 
   return {
     categoryList,

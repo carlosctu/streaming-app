@@ -16,7 +16,6 @@ export default function SignIn() {
 
   useEffect(() => {
     setPlay(true);
-    console.log("ola");
   }, []);
 
   return (

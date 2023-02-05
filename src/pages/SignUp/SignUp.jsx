@@ -52,12 +52,10 @@ export default function SignUp() {
   };
 
   const handleShowPassword = (passwordType) => {
-    console.log(passwordType)
     setValues({
       ...values,
       [passwordType]: !values[passwordType],
     });
-    console.log(values)
   };
 
   return (
