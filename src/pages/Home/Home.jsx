@@ -25,7 +25,6 @@ export default function Home() {
   const actionCategory = useCategoryList(categories.ROMANCE, sorting.AVERAGE);
   const romanceCategory = useCategoryList(categories.DRAMA, sorting.AVERAGE);
   const navigate = useNavigate();
-  console.log(trendingList?.data[1]);
   return (
     <HomeWrapper>
       <TrendingPoster

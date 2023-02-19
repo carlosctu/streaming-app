@@ -13,8 +13,6 @@ export async function getCategoryList(category, sorting = "averageRating") {
 }
 
 export async function getAnimeInfo(path) {
-  console.log(path);
   const response = await api.get(path);
-  console.log(response.data);
-  return response.data;
+  return response.data?.data.attributes;
 }
