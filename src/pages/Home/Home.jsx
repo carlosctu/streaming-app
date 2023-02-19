@@ -32,8 +32,8 @@ export default function Home() {
           <h2>{trendingList?.data[1].attributes.titles["en_jp"]}</h2>
           <p>{`${trendingList?.data[1].attributes.episodeCount} episodes`}</p>
           <ButtonContainer
-            description="Play"
-            width="68px"
+            description="Watch now"
+            width="120px"
             height="28px"
             startAndornment={
               <ButtonIcon
@@ -47,7 +47,7 @@ export default function Home() {
         </PosterDescriptionSection>
       </TrendingPoster>
       <TrendingCarrouselContainer category={trendingList} />
-      {/* <CategoryCarrouselContainer
+      <CategoryCarrouselContainer
         category={actionCategory}
         title={"Romance Checkpoint"}
       />
@@ -59,7 +59,6 @@ export default function Home() {
         category={romanceCategory}
         title={"Shounen animes"}
       />
-      <div>asçdajkldjaldkasjdlkasjlk</div> */}
     </HomeWrapper>
   );
 }
@@ -75,7 +74,11 @@ const validateCategoryList = (anime) => {
   );
 };
 const handleAnimeTitle = (title) => {
-  return title["en"] === undefined ? title["en_jp"] : title["en"];
+  let animeTitle = title["en"] === undefined ? title["en_jp"] : title["en"];
+  if (animeTitle.length > 30) {
+    animeTitle = `${animeTitle.substring(0,30)}...`
+  }
+  return animeTitle;
 };
 
 export function TrendingCarrouselContainer(props) {
@@ -89,6 +92,8 @@ export function TrendingCarrouselContainer(props) {
         {props.category?.data.map((data, index) => {
           const anime = data.attributes;
           if (validateCategoryList(anime)) return;
+          console.log(anime.titles["en"]);
+          console.log(anime.titles["en"].length);
           return (
             <div
               key={index}
@@ -118,11 +123,14 @@ export function CategoryCarrouselContainer(props) {
         <span>See all</span>
       </CarrouselTitleSection>
       <TrendingCarrousel>
-        {props.category.categoryList?.data.map((data) => {
+        {props.category.categoryList?.data.map((data, index) => {
           const anime = data.attributes;
           if (validateCategoryList(anime)) return;
           return (
-            <div style={{ display: "flex", flexDirection: "column" }}>
+            <div
+              key={index}
+              style={{ display: "flex", flexDirection: "column" }}
+            >
               <TrendingAnimeContainer coverImage={anime.posterImage["small"]}>
                 <div style={{ borderRadius: "4px" }}>
                   {formatRating(anime.averageRating)}
@@ -165,6 +173,7 @@ const TrendingPoster = styled.div`
   background-repeat: no-repeat;
   height: 360px;
   width: 100%;
+  margin-bottom: 16px;
 `;
 
 const HomeWrapper = styled.div`
@@ -176,7 +185,7 @@ const HomeWrapper = styled.div`
 const CarrouselWrapper = styled.div`
   display: flex;
   flex-direction: column;
-  row-gap: 8px;
+  row-gap: 18px;
   padding: 0 12px;
 `;
 
@@ -191,6 +200,7 @@ const CarrouselTitleSection = styled.div`
   }
   h3 {
     font-size: 22px;
+    font-weight: bold;
   }
 `;
 
@@ -200,14 +210,13 @@ const CarrouselDescriptionSection = styled.div`
   word-wrap: break-word;
   flex-wrap: wrap;
   width: 160px;
-  /* height: 110px; */
   color: black;
   justify-content: space-between;
   padding: 12px 0;
   border-bottom-left-radius: 8px;
   border-bottom-right-radius: 8px;
   p {
-    font-size: 15px;
+    font-size: 18px;
   }
   div:first-child {
     width: 100%;
