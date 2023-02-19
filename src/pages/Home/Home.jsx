@@ -1,4 +1,5 @@
 import { BsPlayCircle, BsPlayCircleFill } from "react-icons/bs";
+import { useNavigate } from "react-router-dom";
 import styled from "styled-components";
 import { ButtonContainer } from "../../componets/buttons/ButtonContainer";
 import ButtonIcon from "../../componets/buttons/ButtonIcon";
@@ -23,10 +24,19 @@ export default function Home() {
   );
   const actionCategory = useCategoryList(categories.ROMANCE, sorting.AVERAGE);
   const romanceCategory = useCategoryList(categories.DRAMA, sorting.AVERAGE);
+  const navigate = useNavigate();
+  console.log(trendingList?.data[1]);
   return (
     <HomeWrapper>
       <TrendingPoster
         coverImage={trendingList?.data[1].attributes.posterImage["medium"]}
+        onClick={() =>
+          navigate("/animePage", {
+            state: {
+              id: trendingList?.data[1].links.self,
+            },
+          })
+        }
       >
         <PosterDescriptionSection>
           <h2>{trendingList?.data[1].attributes.titles["en_jp"]}</h2>
@@ -76,7 +86,7 @@ const validateCategoryList = (anime) => {
 const handleAnimeTitle = (title) => {
   let animeTitle = title["en"] === undefined ? title["en_jp"] : title["en"];
   if (animeTitle.length > 30) {
-    animeTitle = `${animeTitle.substring(0,30)}...`
+    animeTitle = `${animeTitle.substring(0, 30)}...`;
   }
   return animeTitle;
 };
@@ -92,8 +102,6 @@ export function TrendingCarrouselContainer(props) {
         {props.category?.data.map((data, index) => {
           const anime = data.attributes;
           if (validateCategoryList(anime)) return;
-          console.log(anime.titles["en"]);
-          console.log(anime.titles["en"].length);
           return (
             <div
               key={index}
