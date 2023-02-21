@@ -46,3 +46,44 @@ export function useAnimeInfo(path) {
     animeInfoAct,
   };
 }
+export function useAnimeCharacters(id) {
+  const {
+    data: animeCharacters,
+    loading: animeCharactersLoading,
+    error: animeCharactersError,
+    act: animeCharactersAct,
+  } = useAsync(() => kitsuApi.getAnimeCharacters(id));
+
+  return {
+    animeCharacters,
+    animeCharactersLoading,
+    animeCharactersError,
+    animeCharactersAct,
+  };
+}
+export function useAnimeEpisodes() {
+  const {
+    loading: animeEpisodesLoading,
+    error: animeEpisodesError,
+    act: animeEpisodes,
+  } = useAsync(kitsuApi.getAnimeEpisodes, false);
+
+  return {
+    animeEpisodes,
+    animeEpisodesLoading,
+    animeEpisodesError,
+  };
+}
+export function useEpisodeData() {
+  const {
+    loading: episodeDataLoading,
+    error: episodeDataError,
+    act: episodeData,
+  } = useAsync(kitsuApi.getEpisodesData, false);
+
+  return {
+    episodeData,
+    episodeDataLoading,
+    episodeDataError,
+  };
+}

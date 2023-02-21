@@ -1,28 +1,55 @@
+import { useEffect, useState } from "react";
 import { useLocation } from "react-router-dom";
 import styled from "styled-components";
-import { useAnimeInfo } from "../../hooks/api/useAnime";
+import {
+  useAnimeCharacters,
+  useEpisodeData,
+  useAnimeEpisodes,
+  useAnimeInfo,
+} from "../../hooks/api/useAnime";
 
 export default function AnimePage() {
   const location = useLocation();
-  console.log(location.state);
   const { animeInfo } = useAnimeInfo(location.state.id);
-  console.log(animeInfo);
-  //   const data = animeInfo?.data.attributes;
+  const { animeEpisodes } = useAnimeEpisodes();
+  const { episodeData } = useEpisodeData();
+  const [episodesData, setEpisodesData] = useState([]);
+  useEffect(() => {
+    animeEpisodes(location.state.id.split("/")[2]).then((data) => {
+      return data.map(async (episode) => {
+        const episodeInfo = await episodeData(episode.id);
+        setEpisodesData((values) => [...values, episodeInfo.data.attributes]);
+      });
+    });
+  }, []);
+
+  console.log(episodesData);
+
   const formatRating = (rating) => {
     return parseFloat(rating / 10).toFixed(1);
   };
+
   return (
     <HomeWrapper>
       <Poster
         coverImage={animeInfo?.posterImage.medium}
         height={animeInfo?.posterImage.meta.dimensions.medium.height}
       ></Poster>
+      {episodesData.map((e) => {
+        return (
+          <Poster
+            coverImage={e.thumbnail.tiny}
+            height={e.thumbnail.meta.dimensions.tiny.height}
+            width={e.thumbnail.meta.dimensions.tiny.width}
+          ></Poster>
+        );
+      })}
       <div>{animeInfo?.canonicalTitle}</div>
       <p>Rating: {formatRating(animeInfo?.averageRating)}</p>
       <p>{animeInfo?.ageRatingGuide}</p>
       <p>{animeInfo?.description.split(`(`)[0]}</p>
       <p>Cast:</p>
-      
+
       <p>Trailer:</p>
       <iframe
         width="100%"
@@ -50,6 +77,6 @@ const Poster = styled.div`
   background-position-y: 15%;
   background-repeat: no-repeat;
   height: ${(props) => `${props.height}px`};
-  width: 100%;
+  width: ${(props) => (props.width ? `${props.width}px` : "100%")};
   margin-bottom: 16px;
 `;
