@@ -44,21 +44,6 @@ export function useAnimeInfo() {
     animeInfoError,
   };
 }
-export function useAnimeCharacters(id) {
-  const {
-    data: animeCharacters,
-    loading: animeCharactersLoading,
-    error: animeCharactersError,
-    act: animeCharactersAct,
-  } = useAsync(() => kitsuApi.getAnimeCharacters(id));
-
-  return {
-    animeCharacters,
-    animeCharactersLoading,
-    animeCharactersError,
-    animeCharactersAct,
-  };
-}
 export function useAnimeEpisodes() {
   const {
     loading: animeEpisodesLoading,

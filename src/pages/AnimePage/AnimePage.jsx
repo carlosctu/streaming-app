@@ -2,7 +2,6 @@ import { useEffect, useState } from "react";
 import { useLocation } from "react-router-dom";
 import styled from "styled-components";
 import {
-  useAnimeCharacters,
   useEpisodeData,
   useAnimeEpisodes,
   useAnimeInfo,
@@ -21,7 +20,6 @@ export default function AnimePage() {
     animeEpisodes(location.state.id.split("/")[2]).then((data) => {
       return data.map(async (episode) => {
         const episodeInfo = await episodeData(episode.id);
-        // if (animeData.includes(episodeInfo.data.id))
         setEpisodesData((values) => {
           const duplicated = values?.some((e) => e.id === episodeInfo.data.id);
           if (!duplicated) return [...values, episodeInfo.data];
