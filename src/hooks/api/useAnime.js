@@ -31,19 +31,17 @@ export function useCategoryList(category, sorting) {
     categoryListAct,
   };
 }
-export function useAnimeInfo(path) {
+export function useAnimeInfo() {
   const {
-    data: animeInfo,
     loading: animeInfoLoading,
     error: animeInfoError,
-    act: animeInfoAct,
-  } = useAsync(() => kitsuApi.getAnimeInfo(path));
+    act: animeInfo,
+  } = useAsync(kitsuApi.getAnimeInfo, false);
 
   return {
     animeInfo,
     animeInfoLoading,
     animeInfoError,
-    animeInfoAct,
   };
 }
 export function useAnimeCharacters(id) {
