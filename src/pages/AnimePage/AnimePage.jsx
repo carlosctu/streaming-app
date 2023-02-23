@@ -44,6 +44,16 @@ export default function AnimePage() {
       <p>Rating: {formatRating(animeData?.averageRating)}</p>
       <p>{animeData?.ageRatingGuide}</p>
       <p>{animeData?.description.split(`(`)[0]}</p>
+      <p>Trailer:</p>
+      <iframe
+        width="100%"
+        height="280px"
+        src={`https://www.youtube.com/embed/${animeData?.youtubeVideoId}`}
+        title="Chainsaw Man - Main Trailer ／『チェンソーマン』本予告"
+        // frameborder="0"
+        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+        // allowfullscreen
+      ></iframe>
       <p>Episodes:</p>
       {episodesData.map((e, index) => (
         <EpisodeContainer>
@@ -69,16 +79,6 @@ export default function AnimePage() {
           </div>
         </EpisodeContainer>
       ))}
-      <p>Trailer:</p>
-      <iframe
-        width="100%"
-        height="280px"
-        src={`https://www.youtube.com/embed/${animeData?.youtubeVideoId}`}
-        title="Chainsaw Man - Main Trailer ／『チェンソーマン』本予告"
-        // frameborder="0"
-        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
-        // allowfullscreen
-      ></iframe>
     </HomeWrapper>
   );
 }
@@ -111,7 +111,5 @@ const Thumbnail = styled.div`
 const EpisodeContainer = styled.div`
   display: flex;
   flex-direction: row;
-  /* justify-content: space-between; */
-  /* flex-wrap: wrap; */
-  /* width: 100%; */
+  padding: 0 10px;
 `;
