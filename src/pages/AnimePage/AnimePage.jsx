@@ -25,6 +25,7 @@ export default function AnimePage() {
           if (!duplicated) return [...values, episodeInfo.data];
           return [...values];
         });
+        episodesData.sort((a, b) => a.id - b.id);
       });
     });
   }, []);
@@ -41,29 +42,44 @@ export default function AnimePage() {
         coverImage={animeData?.posterImage.medium}
         height={animeData?.posterImage.meta.dimensions.medium.height}
       ></Poster>
-      {episodesData.map((e, index) => (
-        <Poster
-          key={index}
-          coverImage={e.attributes.thumbnail.tiny}
-          height={e.attributes.thumbnail.meta.dimensions.tiny.height}
-          width={e.attributes.thumbnail.meta.dimensions.tiny.width}
-        ></Poster>
-      ))}
       <div>{animeData?.canonicalTitle}</div>
       <p>Rating: {formatRating(animeData?.averageRating)}</p>
       <p>{animeData?.ageRatingGuide}</p>
       <p>{animeData?.description.split(`(`)[0]}</p>
-      <p>Cast:</p>
-
+      <p>Episodes:</p>
+      {episodesData.map((e, index) => (
+        <EpisodeContainer>
+          <Thumbnail
+            key={index}
+            coverImage={e.attributes.thumbnail.tiny}
+            height={e.attributes.thumbnail.meta.dimensions.tiny.height}
+            width={e.attributes.thumbnail.meta.dimensions.tiny.width}
+          ></Thumbnail>
+          <div
+            style={{
+              display: "flex",
+              flexDirection: "column",
+              flexWrap: "wrap",
+              paddingLeft: "10px",
+              width: "70%",
+            }}
+          >
+            <div>{e.attributes.canonicalTitle}</div>
+            <div
+              style={{ width: "100%" }}
+            >{` ${e.attributes.description.substring(0, 90)}...`}</div>
+          </div>
+        </EpisodeContainer>
+      ))}
       <p>Trailer:</p>
       <iframe
         width="100%"
         height="280px"
         src={`https://www.youtube.com/embed/${animeData?.youtubeVideoId}`}
         title="Chainsaw Man - Main Trailer ／『チェンソーマン』本予告"
-        frameborder="0"
+        // frameborder="0"
         allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
-        allowfullscreen
+        // allowfullscreen
       ></iframe>
     </HomeWrapper>
   );
@@ -79,9 +95,25 @@ const Poster = styled.div`
   display: flex;
   background-image: url(${(props) => props.coverImage});
   background-size: cover;
-  background-position-y: 15%;
   background-repeat: no-repeat;
+  background-position-y: 15%;
   height: ${(props) => `${props.height}px`};
   width: ${(props) => (props.width ? `${props.width}px` : "100%")};
-  margin-bottom: 16px;
+`;
+
+const Thumbnail = styled.div`
+  background-image: url(${(props) => props.coverImage});
+  background-size: cover;
+  background-repeat: no-repeat;
+  height: ${(props) => `${props.height}px`};
+  width: 50%;
+  margin-bottom: 8px;
+`;
+
+const EpisodeContainer = styled.div`
+  display: flex;
+  flex-direction: row;
+  /* justify-content: space-between; */
+  /* flex-wrap: wrap; */
+  /* width: 100%; */
 `;
