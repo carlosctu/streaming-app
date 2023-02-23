@@ -30,8 +30,6 @@ export default function AnimePage() {
     });
   }, []);
 
-  console.log(episodesData);
-
   const formatRating = (rating) => {
     return parseFloat(rating / 10).toFixed(1);
   };
