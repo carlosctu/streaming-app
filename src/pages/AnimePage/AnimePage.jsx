@@ -40,45 +40,62 @@ export default function AnimePage() {
         coverImage={animeData?.posterImage.medium}
         height={animeData?.posterImage.meta.dimensions.medium.height}
       ></Poster>
-      <div>{animeData?.canonicalTitle}</div>
-      <p>Rating: {formatRating(animeData?.averageRating)}</p>
-      <p>{animeData?.ageRatingGuide}</p>
-      <p>{animeData?.description.split(`(`)[0]}</p>
-      <p>Trailer:</p>
-      <iframe
-        width="100%"
-        height="280px"
-        src={`https://www.youtube.com/embed/${animeData?.youtubeVideoId}`}
-        title="Chainsaw Man - Main Trailer ／『チェンソーマン』本予告"
-        // frameborder="0"
-        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
-        // allowfullscreen
-      ></iframe>
-      <p>Episodes:</p>
-      {episodesData.map((e, index) => (
-        <EpisodeContainer>
-          <Thumbnail
-            key={index}
-            coverImage={e.attributes.thumbnail.tiny}
-            height={e.attributes.thumbnail.meta.dimensions.tiny.height}
-            width={e.attributes.thumbnail.meta.dimensions.tiny.width}
-          ></Thumbnail>
-          <div
-            style={{
-              display: "flex",
-              flexDirection: "column",
-              flexWrap: "wrap",
-              paddingLeft: "10px",
-              width: "70%",
-            }}
+      <div style={{ padding: "0 12px" }}>
+        <div style={{ fontSize: "24px" }}>{animeData?.canonicalTitle}</div>
+        <div
+          style={{
+            display: "flex",
+            flexDirection: "column",
+            rowGap: "4px",
+            padding: "8px 0",
+          }}
+        >
+          <p style={{ fontSize: "15px" }}>
+            Rating: {formatRating(animeData?.averageRating)}
+          </p>
+          <p style={{ fontSize: "15px" }}>{animeData?.ageRatingGuide}</p>
+          <p
+            style={{ fontSize: "16px", paddingTop: "4px", lineHeight: "18px" }}
           >
-            <div>{e.attributes.canonicalTitle}</div>
+            {animeData?.description.split(`(`)[0]}
+          </p>
+        </div>
+        <p>Trailer:</p>
+        <iframe
+          width="100%"
+          height="280px"
+          src={`https://www.youtube.com/embed/${animeData?.youtubeVideoId}`}
+          title="Chainsaw Man - Main Trailer ／『チェンソーマン』本予告"
+          // frameborder="0"
+          allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+          // allowfullscreen
+        ></iframe>
+        <p>Episodes:</p>
+        {episodesData.map((e, index) => (
+          <EpisodeContainer key={index}>
+            <Thumbnail
+              key={index}
+              coverImage={e.attributes.thumbnail.tiny}
+              height={e.attributes.thumbnail.meta.dimensions.tiny.height}
+              width={e.attributes.thumbnail.meta.dimensions.tiny.width}
+            ></Thumbnail>
             <div
-              style={{ width: "100%" }}
-            >{` ${e.attributes.description.substring(0, 90)}...`}</div>
-          </div>
-        </EpisodeContainer>
-      ))}
+              style={{
+                display: "flex",
+                flexDirection: "column",
+                flexWrap: "wrap",
+                paddingLeft: "10px",
+                width: "70%",
+              }}
+            >
+              <div>{e.attributes.canonicalTitle}</div>
+              <div
+                style={{ width: "100%" }}
+              >{` ${e.attributes.description.substring(0, 90)}...`}</div>
+            </div>
+          </EpisodeContainer>
+        ))}
+      </div>
     </HomeWrapper>
   );
 }

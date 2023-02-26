@@ -28,18 +28,18 @@ export default function Home() {
   return (
     <HomeWrapper>
       <TrendingPoster
-        coverImage={trendingList?.data[1].attributes.posterImage["medium"]}
+        coverImage={trendingList?.data[2].attributes.posterImage["medium"]}
         onClick={() =>
           navigate("/animePage", {
             state: {
-              id: trendingList?.data[1].links.self,
+              id: trendingList?.data[2].links.self,
             },
           })
         }
       >
         <PosterDescriptionSection>
-          <h2>{trendingList?.data[1].attributes.titles["en_jp"]}</h2>
-          <p>{`${trendingList?.data[1].attributes.episodeCount} episodes`}</p>
+          <h2>{trendingList?.data[2].attributes.titles["en_jp"]}</h2>
+          <p>{`${trendingList?.data[2].attributes.episodeCount} episodes`}</p>
           <ButtonContainer
             description="Watch now"
             width="120px"
