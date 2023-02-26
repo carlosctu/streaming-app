@@ -41,25 +41,16 @@ export default function AnimePage() {
         height={animeData?.posterImage.meta.dimensions.medium.height}
       ></Poster>
       <div style={{ padding: "0 12px" }}>
-        <div style={{ fontSize: "24px" }}>{animeData?.canonicalTitle}</div>
-        <div
-          style={{
-            display: "flex",
-            flexDirection: "column",
-            rowGap: "4px",
-            padding: "8px 0",
-          }}
-        >
-          <p style={{ fontSize: "15px" }}>
-            Rating: {formatRating(animeData?.averageRating)}
-          </p>
-          <p style={{ fontSize: "15px" }}>{animeData?.ageRatingGuide}</p>
-          <p
-            style={{ fontSize: "16px", paddingTop: "4px", lineHeight: "18px" }}
-          >
+        <div style={{ fontSize: "24px", fontWeight: "bold" }}>
+          {animeData?.canonicalTitle}
+        </div>
+        <DescriptionSection>
+          <p>Rating: {formatRating(animeData?.averageRating)}</p>
+          <p>{animeData?.ageRatingGuide}</p>
+          <p style={{ fontSize: "16px", paddingTop: "8px" }}>
             {animeData?.description.split(`(`)[0]}
           </p>
-        </div>
+        </DescriptionSection>
         <p>Trailer:</p>
         <iframe
           width="100%"
@@ -123,6 +114,14 @@ const Thumbnail = styled.div`
   height: ${(props) => `${props.height}px`};
   width: 50%;
   margin-bottom: 8px;
+`;
+
+const DescriptionSection = styled.div`
+  display: flex;
+  flex-direction: column;
+  padding: 8px 0;
+  font-size: 15px;
+  line-height: 20px;
 `;
 
 const EpisodeContainer = styled.div`
