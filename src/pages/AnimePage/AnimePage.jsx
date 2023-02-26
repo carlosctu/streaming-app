@@ -1,14 +1,17 @@
 import { useEffect, useState } from "react";
-import { useLocation } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import styled from "styled-components";
 import {
   useEpisodeData,
   useAnimeEpisodes,
   useAnimeInfo,
 } from "../../hooks/api/useAnime";
+import { BsFillArrowLeftCircleFill } from "react-icons/bs";
+import { IconContext } from "react-icons";
 
 export default function AnimePage() {
   const location = useLocation();
+  const navigate = useNavigate();
   const { animeInfo } = useAnimeInfo();
   const { animeEpisodes } = useAnimeEpisodes();
   const { episodeData } = useEpisodeData();
@@ -33,11 +36,13 @@ export default function AnimePage() {
     return parseFloat(rating / 10).toFixed(1);
   };
 
-  console.log(episodesData);
-  console.log(animeData);
-
   return (
     <HomeWrapper>
+      <IconContext.Provider value={{ size: "24px" }}>
+        <BackButton>
+          <BsFillArrowLeftCircleFill onClick={() => navigate(-1)} />
+        </BackButton>
+      </IconContext.Provider>
       <Poster
         coverImage={animeData?.posterImage.medium}
         height={animeData?.posterImage.meta.dimensions.medium.height}
@@ -97,6 +102,7 @@ const HomeWrapper = styled.div`
 `;
 
 const Poster = styled.div`
+  z-index: -1;
   display: flex;
   background-image: url(${(props) => props.coverImage});
   background-size: cover;
@@ -140,4 +146,12 @@ const SectionTitle = styled.p`
   font-size: 18px;
   font-weight: bold;
   padding: ${(props) => props.padding};
+`;
+
+const BackButton = styled.div`
+  position: absolute;
+  left: 0;
+  top: 0;
+  z-index: 1;
+  padding: 10px;
 `;
