@@ -25,7 +25,6 @@ export default function AnimePage() {
           if (!duplicated) return [...values, episodeInfo.data];
           return [...values];
         });
-        episodesData.sort((a, b) => a.id - b.id);
       });
     });
   }, []);
@@ -33,6 +32,9 @@ export default function AnimePage() {
   const formatRating = (rating) => {
     return parseFloat(rating / 10).toFixed(1);
   };
+
+  console.log(episodesData);
+  console.log(animeData);
 
   return (
     <HomeWrapper>
@@ -51,41 +53,38 @@ export default function AnimePage() {
             {animeData?.description.split(`(`)[0]}
           </p>
         </DescriptionSection>
-        <p>Trailer:</p>
+        <SectionTitle>Trailer:</SectionTitle>
         <iframe
-          width="100%"
-          height="280px"
+          style={{ padding: "12px 0", width: "100%", height: "300px" }}
           src={`https://www.youtube.com/embed/${animeData?.youtubeVideoId}`}
-          title="Chainsaw Man - Main Trailer ／『チェンソーマン』本予告"
-          // frameborder="0"
+          title={`${animeData?.canonicalTitle} - Main Trailer`}
           allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
-          // allowfullscreen
         ></iframe>
-        <p>Episodes:</p>
-        {episodesData.map((e, index) => (
-          <EpisodeContainer key={index}>
-            <Thumbnail
-              key={index}
-              coverImage={e.attributes.thumbnail.tiny}
-              height={e.attributes.thumbnail.meta.dimensions.tiny.height}
-              width={e.attributes.thumbnail.meta.dimensions.tiny.width}
-            ></Thumbnail>
-            <div
-              style={{
-                display: "flex",
-                flexDirection: "column",
-                flexWrap: "wrap",
-                paddingLeft: "10px",
-                width: "70%",
-              }}
-            >
-              <div>{e.attributes.canonicalTitle}</div>
-              <div
-                style={{ width: "100%" }}
-              >{` ${e.attributes.description.substring(0, 90)}...`}</div>
-            </div>
-          </EpisodeContainer>
-        ))}
+        <SectionTitle padding={"0 0 12px 0"}>Episodes:</SectionTitle>
+        {episodesData
+          .sort((a, b) => a.id - b.id)
+          .map((e, index) => (
+            <EpisodeContainer key={index}>
+              <Thumbnail
+                key={index}
+                coverImage={e.attributes.thumbnail.tiny}
+                height={e.attributes.thumbnail.meta.dimensions.tiny.height}
+                width={e.attributes.thumbnail.meta.dimensions.tiny.width}
+              ></Thumbnail>
+              <EpisodeDescription>
+                <div style={{ fontWeight: "bold", paddingBottom: "8px" }}>
+                  {e.attributes.canonicalTitle}
+                </div>
+                <div
+                  style={{
+                    width: "100%",
+                    fontSize: "14px",
+                    lineHeight: "16px",
+                  }}
+                >{` ${e.attributes.description.substring(0, 90)}...`}</div>
+              </EpisodeDescription>
+            </EpisodeContainer>
+          ))}
       </div>
     </HomeWrapper>
   );
@@ -127,5 +126,18 @@ const DescriptionSection = styled.div`
 const EpisodeContainer = styled.div`
   display: flex;
   flex-direction: row;
-  padding: 0 10px;
+`;
+
+const EpisodeDescription = styled.div`
+  display: flex;
+  flex-direction: column;
+  flex-wrap: wrap;
+  padding-left: 10px;
+  width: 70%;
+`;
+
+const SectionTitle = styled.p`
+  font-size: 18px;
+  font-weight: bold;
+  padding: ${(props) => props.padding};
 `;
