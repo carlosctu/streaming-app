@@ -54,7 +54,7 @@ export default function AnimePage() {
         <DescriptionSection>
           <p>Rating: {formatRating(animeData?.averageRating)}</p>
           <p>{animeData?.ageRatingGuide}</p>
-          <p style={{ fontSize: "16px", paddingTop: "8px" }}>
+          <p style={{ fontSize: "14px", paddingTop: "8px" }}>
             {animeData?.description.split(`(`)[0]}
           </p>
         </DescriptionSection>
@@ -68,25 +68,34 @@ export default function AnimePage() {
         <SectionTitle padding={"0 0 12px 0"}>Episodes:</SectionTitle>
         {episodesData
           .sort((a, b) => a.id - b.id)
-          .map((e, index) => (
-            <EpisodeContainer key={index}>
+          .map((e) => (
+            <EpisodeContainer key={e.id}>
               <Thumbnail
-                key={index}
                 coverImage={e.attributes.thumbnail.tiny}
                 height={e.attributes.thumbnail.meta.dimensions.tiny.height}
                 width={e.attributes.thumbnail.meta.dimensions.tiny.width}
               ></Thumbnail>
               <EpisodeDescription>
-                <div style={{ fontWeight: "bold", paddingBottom: "8px" }}>
+                <div
+                  style={{
+                    fontSize: "14px",
+                    lineHeight: "16px",
+                    fontWeight: "bold",
+                    paddingBottom: "8px",
+                  }}
+                >
                   {e.attributes.canonicalTitle}
                 </div>
                 <div
                   style={{
                     width: "100%",
-                    fontSize: "14px",
+                    fontSize: "12px",
                     lineHeight: "16px",
                   }}
-                >{` ${e.attributes.description.substring(0, 90)}...`}</div>
+                >{` ${e.attributes.description?.substring(
+                  0,
+                  124 - e.attributes.canonicalTitle.length
+                )}...`}</div>
               </EpisodeDescription>
             </EpisodeContainer>
           ))}

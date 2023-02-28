@@ -1,4 +1,4 @@
-import { BsPlayCircle, BsPlayCircleFill } from "react-icons/bs";
+import {  BsPlayCircleFill } from "react-icons/bs";
 import { useNavigate } from "react-router-dom";
 import styled from "styled-components";
 import { ButtonContainer } from "../../componets/buttons/ButtonContainer";
@@ -59,6 +59,7 @@ export default function Home() {
       <CategoryCarrouselContainer
         category={actionCategory}
         title={"Romance Checkpoint"}
+    
       />
       <CategoryCarrouselContainer
         category={fantasyCategory}
@@ -91,6 +92,7 @@ const handleAnimeTitle = (title) => {
 };
 
 export function TrendingCarrouselContainer(props) {
+  const navigate = useNavigate();
   return (
     <CarrouselWrapper>
       <CarrouselTitleSection>
@@ -103,8 +105,15 @@ export function TrendingCarrouselContainer(props) {
           if (validateCategoryList(anime)) return;
           return (
             <div
-              key={index}
+              key={data.id}
               style={{ display: "flex", flexDirection: "column" }}
+              onClick={() =>
+                navigate("/animePage", {
+                  state: {
+                    id: data.links.self,
+                  },
+                })
+              }
             >
               <TrendingAnimeContainer coverImage={anime.posterImage["small"]}>
                 <div style={{ borderRadius: "4px" }}>
@@ -123,6 +132,7 @@ export function TrendingCarrouselContainer(props) {
 }
 
 export function CategoryCarrouselContainer(props) {
+  const navigate = useNavigate();
   return (
     <CarrouselWrapper>
       <CarrouselTitleSection>
@@ -135,8 +145,15 @@ export function CategoryCarrouselContainer(props) {
           if (validateCategoryList(anime)) return;
           return (
             <div
-              key={index}
+              key={data.id}
               style={{ display: "flex", flexDirection: "column" }}
+              onClick={() =>
+                navigate("/animePage", {
+                  state: {
+                    id: data.links.self,
+                  },
+                })
+              }
             >
               <TrendingAnimeContainer coverImage={anime.posterImage["small"]}>
                 <div style={{ borderRadius: "4px" }}>
