@@ -20,7 +20,7 @@ export default function AnimePage() {
 
   useEffect(() => {
     animeInfo(location.state.id).then((data) => setAnimeData(data));
-    animeEpisodes(location.state.id.split("/")[2]).then((data) => {
+    animeEpisodes(location.state.id.split("anime/")[1]).then((data) => {
       return data.map(async (episode) => {
         const episodeInfo = await episodeData(episode.id);
         setEpisodesData((values) => {
@@ -45,11 +45,11 @@ export default function AnimePage() {
       </IconContext.Provider>
       <Poster
         coverImage={animeData?.posterImage.medium}
-        height={animeData?.posterImage.meta.dimensions.medium.height}
+        height={animeData?.posterImage.meta.dimensions.medium?.height}
       ></Poster>
       <div style={{ padding: "0 12px" }}>
         <div style={{ fontSize: "24px", fontWeight: "bold" }}>
-          {animeData?.canonicalTitle}
+          {location.state.title}
         </div>
         <DescriptionSection>
           <p>Rating: {formatRating(animeData?.averageRating)}</p>
@@ -68,37 +68,47 @@ export default function AnimePage() {
         <SectionTitle padding={"0 0 12px 0"}>Episodes:</SectionTitle>
         {episodesData
           .sort((a, b) => a.id - b.id)
-          .map((e) => (
-            <EpisodeContainer key={e.id}>
-              <Thumbnail
-                coverImage={e.attributes.thumbnail.tiny}
-                height={e.attributes.thumbnail.meta.dimensions.tiny.height}
-                width={e.attributes.thumbnail.meta.dimensions.tiny.width}
-              ></Thumbnail>
-              <EpisodeDescription>
-                <div
-                  style={{
-                    fontSize: "14px",
-                    lineHeight: "16px",
-                    fontWeight: "bold",
-                    paddingBottom: "8px",
-                  }}
-                >
-                  {e.attributes.canonicalTitle}
-                </div>
-                <div
-                  style={{
-                    width: "100%",
-                    fontSize: "12px",
-                    lineHeight: "16px",
-                  }}
-                >{` ${e.attributes.description?.substring(
-                  0,
-                  124 - e.attributes.canonicalTitle.length
-                )}...`}</div>
-              </EpisodeDescription>
-            </EpisodeContainer>
-          ))}
+          .map((e) => {
+            if (e.attributes.thumbnail)
+              return (
+                <EpisodeContainer key={e.id}>
+                  <Thumbnail
+                    coverImage={
+                      e.attributes.thumbnail?.tiny ??
+                      e.attributes.thumbnail?.original
+                    }
+                    height={
+                      e.attributes.thumbnail?.meta.dimensions.tiny?.height
+                    }
+                    width={e.attributes.thumbnail?.meta.dimensions.tiny?.width}
+                  ></Thumbnail>
+                  <EpisodeDescription>
+                    <div
+                      style={{
+                        fontSize: "14px",
+                        lineHeight: "16px",
+                        fontWeight: "bold",
+                        paddingBottom: "8px",
+                      }}
+                    >
+                      {e.attributes.canonicalTitle?.length > 40
+                        ? `${e.attributes.canonicalTitle?.substring(0, 40)}...`
+                        : e.attributes?.canonicalTitle}
+                    </div>
+                    <div
+                      style={{
+                        width: "100%",
+                        fontSize: "12px",
+                        lineHeight: "16px",
+                      }}
+                    >{` ${e.attributes.description?.substring(
+                      0,
+                      124 - e.attributes.canonicalTitle?.length
+                    )}...`}</div>
+                  </EpisodeDescription>
+                </EpisodeContainer>
+              );
+          })}
       </div>
     </HomeWrapper>
   );

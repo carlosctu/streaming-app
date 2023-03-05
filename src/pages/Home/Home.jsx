@@ -1,4 +1,4 @@
-import {  BsPlayCircleFill } from "react-icons/bs";
+import { BsPlayCircleFill } from "react-icons/bs";
 import { useNavigate } from "react-router-dom";
 import styled from "styled-components";
 import { ButtonContainer } from "../../componets/buttons/ButtonContainer";
@@ -33,6 +33,7 @@ export default function Home() {
           navigate("/animePage", {
             state: {
               id: trendingList?.data[2].links.self,
+              title: trendingList?.data[2].attributes.titles["en_jp"],
             },
           })
         }
@@ -59,7 +60,6 @@ export default function Home() {
       <CategoryCarrouselContainer
         category={actionCategory}
         title={"Romance Checkpoint"}
-    
       />
       <CategoryCarrouselContainer
         category={fantasyCategory}
@@ -83,10 +83,10 @@ const validateCategoryList = (anime) => {
     formatRating(anime.averageRating) == "0.0"
   );
 };
-const handleAnimeTitle = (title) => {
+const handleAnimeTitle = (title, trimTitle = true) => {
   let animeTitle = title["en"] === undefined ? title["en_jp"] : title["en"];
-  if (animeTitle.length > 30) {
-    animeTitle = `${animeTitle.substring(0, 30)}...`;
+  if (animeTitle.length > 34 && trimTitle) {
+    animeTitle = `${animeTitle.substring(0, 34)}...`;
   }
   return animeTitle;
 };
@@ -100,7 +100,7 @@ export function TrendingCarrouselContainer(props) {
         <span>See all</span>
       </CarrouselTitleSection>
       <TrendingCarrousel>
-        {props.category?.data.map((data, index) => {
+        {props.category?.data.map((data) => {
           const anime = data.attributes;
           if (validateCategoryList(anime)) return;
           return (
@@ -111,6 +111,7 @@ export function TrendingCarrouselContainer(props) {
                 navigate("/animePage", {
                   state: {
                     id: data.links.self,
+                    title: handleAnimeTitle(anime.titles, false),
                   },
                 })
               }
@@ -140,7 +141,7 @@ export function CategoryCarrouselContainer(props) {
         <span>See all</span>
       </CarrouselTitleSection>
       <TrendingCarrousel>
-        {props.category.categoryList?.data.map((data, index) => {
+        {props.category.categoryList?.data.map((data) => {
           const anime = data.attributes;
           if (validateCategoryList(anime)) return;
           return (
@@ -151,6 +152,7 @@ export function CategoryCarrouselContainer(props) {
                 navigate("/animePage", {
                   state: {
                     id: data.links.self,
+                    title: handleAnimeTitle(anime.titles, false),
                   },
                 })
               }
