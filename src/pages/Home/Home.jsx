@@ -4,7 +4,8 @@ import styled from "styled-components";
 import { ButtonContainer } from "../../componets/buttons/ButtonContainer";
 import ButtonIcon from "../../componets/buttons/ButtonIcon";
 import { useCategoryList, useTrendingList } from "../../hooks/api/useAnime";
-import { Skeleton, CarrouselSkeleton } from "../../layout/Shimmer/Skeleton";
+import { CarrouselSkeleton } from "../../componets/utils/shimmers/CarrouselSkeleton";
+import { Skeleton } from "../../componets/utils/shimmers/Skeleton";
 
 export default function Home() {
   const categories = Object.freeze({
