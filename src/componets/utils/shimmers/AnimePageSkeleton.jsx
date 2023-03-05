@@ -31,15 +31,3 @@ export function TitleSectionSkeleton() {
         </div>
     </>
 }
-
-const CarrouselWrapper = styled.div`
-  display: grid;
-  column-gap: 14px;
-  grid-auto-flow: column;
-  flex-direction: row;
-  overflow-x: scroll;
-  scroll-behavior: smooth;
-  scroll-snap-type: x mandatory;
-  width: 100%;
-  height: 318px;
-`
