@@ -9,6 +9,7 @@ export async function getCategoryList(category, sorting = "averageRating") {
   const response = await api.get(
     `/anime?filter[categories]=${category}&sort=-${sorting}`
   );
+  console.log(response.data)
   return response.data;
 }
 

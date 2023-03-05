@@ -4,6 +4,7 @@ import styled from "styled-components";
 import { ButtonContainer } from "../../componets/buttons/ButtonContainer";
 import ButtonIcon from "../../componets/buttons/ButtonIcon";
 import { useCategoryList, useTrendingList } from "../../hooks/api/useAnime";
+import { Skeleton, CarrouselSkeleton } from "../../layout/Shimmer/Skeleton";
 
 export default function Home() {
   const categories = Object.freeze({
@@ -17,57 +18,66 @@ export default function Home() {
     FAVORITES: "favoritesCount",
     DATE: "startDate",
   });
-  const { trendingList } = useTrendingList();
+  const { trendingList, trendingListLoading } = useTrendingList();
   const fantasyCategory = useCategoryList(
     categories.FANTASY,
     sorting.FAVORITES
   );
+  console.log(fantasyCategory);
   const actionCategory = useCategoryList(categories.ROMANCE, sorting.AVERAGE);
   const romanceCategory = useCategoryList(categories.DRAMA, sorting.AVERAGE);
+
   const navigate = useNavigate();
   return (
     <HomeWrapper>
-      <TrendingPoster
-        coverImage={trendingList?.data[2].attributes.posterImage["medium"]}
-        onClick={() =>
-          navigate("/animePage", {
-            state: {
-              id: trendingList?.data[2].links.self,
-              title: trendingList?.data[2].attributes.titles["en_jp"],
-            },
-          })
-        }
-      >
-        <PosterDescriptionSection>
-          <h2>{trendingList?.data[2].attributes.titles["en_jp"]}</h2>
-          <p>{`${trendingList?.data[2].attributes.episodeCount} episodes`}</p>
-          <ButtonContainer
-            description="Watch now"
-            width="120px"
-            height="28px"
-            startAndornment={
-              <ButtonIcon
-                size="16px"
-                children={<BsPlayCircleFill style={{ paddingTop: "2px" }} />}
-              />
-            }
-            borderRadius={false}
-            backgroundColor="#d93a41"
-          />
-        </PosterDescriptionSection>
-      </TrendingPoster>
+      {trendingListLoading ? (
+        <Skeleton style={{ with: "100%", height: "360px", marginBottom: "24px" }} />
+      ) : (
+        <TrendingPoster
+          coverImage={trendingList?.data[2].attributes.posterImage["medium"]}
+          onClick={() =>
+            navigate("/animePage", {
+              state: {
+                id: trendingList?.data[2].links.self,
+                title: trendingList?.data[2].attributes.titles["en_jp"],
+              },
+            })
+          }
+        >
+          <PosterDescriptionSection>
+            <h2>{trendingList?.data[2].attributes.titles["en_jp"]}</h2>
+            <p>{`${trendingList?.data[2].attributes.episodeCount} episodes`}</p>
+            <ButtonContainer
+              description="Watch now"
+              width="120px"
+              height="28px"
+              startAndornment={
+                <ButtonIcon
+                  size="16px"
+                  children={<BsPlayCircleFill style={{ paddingTop: "2px" }} />}
+                />
+              }
+              borderRadius={false}
+              backgroundColor="#d93a41"
+            />
+          </PosterDescriptionSection>
+        </TrendingPoster>
+      )}
       <TrendingCarrouselContainer category={trendingList} />
       <CategoryCarrouselContainer
         category={actionCategory}
         title={"Romance Checkpoint"}
+        isLoading={actionCategory.categoryListLoading}
       />
       <CategoryCarrouselContainer
         category={fantasyCategory}
         title={"Just updated"}
+        isLoading={fantasyCategory.categoryListLoading}
       />
       <CategoryCarrouselContainer
         category={romanceCategory}
         title={"Shounen animes"}
+        isLoading={romanceCategory.categoryListLoading}
       />
     </HomeWrapper>
   );
@@ -106,7 +116,11 @@ export function TrendingCarrouselContainer(props) {
           return (
             <div
               key={data.id}
-              style={{ display: "flex", flexDirection: "column" }}
+              style={{
+                display: "flex",
+                flexDirection: "column",
+                scrollSnapAlign: "end"
+              }}
               onClick={() =>
                 navigate("/animePage", {
                   state: {
@@ -121,7 +135,7 @@ export function TrendingCarrouselContainer(props) {
                   {formatRating(anime.averageRating)}
                 </div>
               </TrendingAnimeContainer>
-              <CarrouselDescriptionSection>
+              <CarrouselDescriptionSection >
                 <p>{handleAnimeTitle(anime.titles)}</p>
               </CarrouselDescriptionSection>
             </div>
@@ -132,43 +146,60 @@ export function TrendingCarrouselContainer(props) {
   );
 }
 
-export function CategoryCarrouselContainer(props) {
+export function CategoryCarrouselContainer({ category, title, isLoading }) {
   const navigate = useNavigate();
   return (
     <CarrouselWrapper>
-      <CarrouselTitleSection>
-        <h3>{props.title}</h3>
-        <span>See all</span>
-      </CarrouselTitleSection>
-      <TrendingCarrousel>
-        {props.category.categoryList?.data.map((data) => {
-          const anime = data.attributes;
-          if (validateCategoryList(anime)) return;
-          return (
-            <div
-              key={data.id}
-              style={{ display: "flex", flexDirection: "column" }}
-              onClick={() =>
-                navigate("/animePage", {
-                  state: {
-                    id: data.links.self,
-                    title: handleAnimeTitle(anime.titles, false),
-                  },
-                })
-              }
-            >
-              <TrendingAnimeContainer coverImage={anime.posterImage["small"]}>
-                <div style={{ borderRadius: "4px" }}>
-                  {formatRating(anime.averageRating)}
+      {isLoading ? (
+        <CarrouselSkeleton />
+      ) : (
+        <>
+          <CarrouselTitleSection>
+            <h3>{title}</h3>
+            <span>See all</span>
+          </CarrouselTitleSection>
+          <TrendingCarrousel>
+            {category.categoryList?.data.map((data) => {
+              const anime = data.attributes;
+              if (validateCategoryList(anime)) return;
+              return (
+                <div
+                  key={data.id}
+                  style={{
+                    display: "flex",
+                    flexDirection: "column",
+                    // (precisa utilizar com o scroll-snap-type)
+                    // irá ajustar o scroll para o lado definido,
+                    // dependendo do viewport, para evitar
+                    // que as divs sejam apresentadas pela metade
+                    // (ele arrasta automaticamente o scroll)
+                    scrollSnapAlign: "end"
+                  }}
+                  onClick={() =>
+                    navigate("/animePage", {
+                      state: {
+                        id: data.links.self,
+                        title: handleAnimeTitle(anime.titles, false),
+                      },
+                    })
+                  }
+                >
+                  <TrendingAnimeContainer
+                    coverImage={anime.posterImage["small"]}
+                  >
+                    <div style={{ borderRadius: "4px" }}>
+                      {formatRating(anime.averageRating)}
+                    </div>
+                  </TrendingAnimeContainer>
+                  <CarrouselDescriptionSection>
+                    <p>{handleAnimeTitle(anime.titles)}</p>
+                  </CarrouselDescriptionSection>
                 </div>
-              </TrendingAnimeContainer>
-              <CarrouselDescriptionSection>
-                <p>{handleAnimeTitle(anime.titles)}</p>
-              </CarrouselDescriptionSection>
-            </div>
-          );
-        })}
-      </TrendingCarrousel>
+              );
+            })}
+          </TrendingCarrousel>
+        </>
+      )}
     </CarrouselWrapper>
   );
 }
@@ -206,6 +237,7 @@ const HomeWrapper = styled.div`
   display: flex;
   flex-direction: column;
   row-gap: 16px;
+  scroll-behavior: smooth;
 `;
 
 const CarrouselWrapper = styled.div`
@@ -213,6 +245,7 @@ const CarrouselWrapper = styled.div`
   flex-direction: column;
   row-gap: 18px;
   padding: 0 12px;
+  scroll-snap-align: start;
 `;
 
 const CarrouselTitleSection = styled.div`
@@ -255,6 +288,18 @@ const TrendingCarrousel = styled.div`
   grid-auto-flow: column;
   flex-direction: row;
   overflow-x: scroll;
+  /* Deixa o scroll mais suave e fancy*/
+  scroll-behavior: smooth;
+  /* (Utilizado no elemento pai)
+     Dependendo do eixo (x,y) ele irá
+     fazer com que o conteúdo sendo
+     exibido se encaixe no ponto de ajuste
+     do viewport, caso não esteja, ele mesmo
+     irá ajustar. Porém precisa ser utilizado
+     junto com o scroll-snap-align no elemento filho
+     (ele arrastará o scroll para evitar cortar divs)
+  */
+  scroll-snap-type: x mandatory;
   width: 100%;
   column-gap: 8px;
 `;
