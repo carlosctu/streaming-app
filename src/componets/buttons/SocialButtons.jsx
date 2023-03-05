@@ -1,10 +1,10 @@
 import google from "../../assets/google.png";
 import facebook from "../../assets/facebook.png";
-import { ButtonContainer, ButtonProps } from "./ButtonContainer";
+import { ButtonContainer } from "./ButtonContainer";
 import styled from "styled-components";
 
 export default function SocialButtons() {
-  const socialButtons: ButtonProps[] = [
+  const socialButtons = [
     {
       description: "Continue with Google",
       logoSrc: google,
