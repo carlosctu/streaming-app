@@ -8,15 +8,18 @@ import {
 } from "../../hooks/api/useAnime";
 import { BsFillArrowLeftCircleFill } from "react-icons/bs";
 import { IconContext } from "react-icons";
+import { TitleSectionSkeleton } from "../../componets/utils/shimmers/AnimePageSkeleton";
 
 export default function AnimePage() {
   const location = useLocation();
   const navigate = useNavigate();
   const { animeInfo } = useAnimeInfo();
-  const { animeEpisodes } = useAnimeEpisodes();
+  const { animeEpisodes, animeEpisodesLoading } = useAnimeEpisodes();
   const { episodeData } = useEpisodeData();
   const [episodesData, setEpisodesData] = useState([]);
   const [animeData, setAnimeData] = useState();
+
+  console.log(animeEpisodesLoading)
 
   useEffect(() => {
     animeInfo(location.state.id).then((data) => setAnimeData(data));
@@ -36,6 +39,8 @@ export default function AnimePage() {
     return parseFloat(rating / 10).toFixed(1);
   };
 
+  console.log(animeData?.posterImage)
+
   return (
     <HomeWrapper>
       <IconContext.Provider value={{ size: "24px" }}>
@@ -43,10 +48,11 @@ export default function AnimePage() {
           <BsFillArrowLeftCircleFill onClick={() => navigate(-1)} />
         </BackButton>
       </IconContext.Provider>
-      <Poster
-        coverImage={animeData?.posterImage.medium}
-        height={animeData?.posterImage.meta.dimensions.medium?.height}
-      ></Poster>
+      {!animeEpisodesLoading ? <TitleSectionSkeleton /> :
+        <Poster
+          coverImage={animeData?.posterImage.medium}
+          height={animeData?.posterImage.meta.dimensions.medium?.height}
+        ></Poster>}
       <div style={{ padding: "0 12px" }}>
         <div style={{ fontSize: "24px", fontWeight: "bold" }}>
           {location.state.title}

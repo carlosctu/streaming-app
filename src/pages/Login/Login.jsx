@@ -9,7 +9,7 @@ import VisibilityOff from "@mui/icons-material/VisibilityOff";
 import Input from "@mui/material/Input";
 import { IconButton } from "@mui/material";
 import React, { useState } from "react";
-import appLogo from "../../assets/appLogo.json";
+// import appLogo from "../../assets/appLogo.json";
 import { Link, useNavigate } from "react-router-dom";
 import AppBar from "../../componets/AppBar";
 // import LottieIcon from "../../componets/LottieIcon";
