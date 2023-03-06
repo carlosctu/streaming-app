@@ -10,7 +10,7 @@ import {
 import { BsFillArrowLeftCircleFill } from "react-icons/bs";
 import { IconContext } from "react-icons";
 import { EpisodesSectionSkeleton, TitleSectionSkeleton } from "../../componets/utils/shimmers/AnimePageSkeleton";
-import AnimePageTabBar from "./AnimePageTabBar";
+import TabBar from "./TabBar";
 
 export default function AnimePage() {
   const location = useLocation();
@@ -92,15 +92,15 @@ export default function AnimePage() {
           />
           <div style={{ padding: "0 12px" }}>
             <TitleSection />
-            <AnimePageTabBar
+            <TabBar
               firstContent={<EpisodesSection isLoading={episodeDataLoading} data={episodesData} />}
-              secondContet={<TrailerSection />}
+              secondContet={< TrailerSection />}
             />
           </div>
         </>
       }
 
-    </HomeWrapper>
+    </HomeWrapper >
   );
 }
 

@@ -5,7 +5,11 @@ import Tab from '@mui/material/Tab';
 import Box from '@mui/material/Box';
 import { useState } from "react";
 
-export default function AnimePageTabBar({ firstContent, secondContent, thirdContent }) {
+export default function TabBar({
+    firstContent,
+    secondContent,
+    thirdContent
+}) {
     const [value, setValue] = useState(0);
     const handleChange = (_, newValue) => {
         setValue(newValue);
@@ -34,6 +38,7 @@ export default function AnimePageTabBar({ firstContent, secondContent, thirdCont
             <StyledTabs style={{ padding: "0" }} value={value} onChange={handleChange} >
                 <Tab label="Episodes" />
                 <Tab label="Trailer" />
+                {/* <Tab label={thirdContent.title} /> */}
             </StyledTabs>
         </Box>
         <div style={{ paddingTop: "12px" }}>
