@@ -37,32 +37,39 @@ export default function AnimePage() {
     return parseFloat(rating / 10).toFixed(1);
   };
 
-  console.log(animeData?.posterImage)
+  function NavBar() {
+    return <IconContext.Provider value={{ size: "24px" }}>
+      <BackButton>
+        <BsFillArrowLeftCircleFill onClick={() => navigate(-1)} />
+      </BackButton>
+    </IconContext.Provider>
+  }
+
+  function TitleSection() {
+    return <>
+      <div style={{ fontSize: "24px", fontWeight: "bold" }}>
+        {location.state.title}
+      </div>
+      <DescriptionSection>
+        <p>Rating: {formatRating(animeData?.averageRating)}</p>
+        <p>{animeData?.ageRatingGuide}</p>
+        <p style={{ fontSize: "14px", paddingTop: "8px" }}>
+          {animeData?.description.split(`(`)[0]}
+        </p>
+      </DescriptionSection></>
+  }
 
   return (
     <HomeWrapper>
-      <IconContext.Provider value={{ size: "24px" }}>
-        <BackButton>
-          <BsFillArrowLeftCircleFill onClick={() => navigate(-1)} />
-        </BackButton>
-      </IconContext.Provider>
       {animeEpisodesLoading ? <TitleSectionSkeleton /> :
         <>
+          <NavBar />
           <Poster
             coverImage={animeData?.posterImage.medium}
             height={animeData?.posterImage.meta.dimensions.medium?.height}
           />
           <div style={{ padding: "0 12px" }}>
-            <div style={{ fontSize: "24px", fontWeight: "bold" }}>
-              {location.state.title}
-            </div>
-            <DescriptionSection>
-              <p>Rating: {formatRating(animeData?.averageRating)}</p>
-              <p>{animeData?.ageRatingGuide}</p>
-              <p style={{ fontSize: "14px", paddingTop: "8px" }}>
-                {animeData?.description.split(`(`)[0]}
-              </p>
-            </DescriptionSection>
+            <TitleSection />
             <SectionTitle>Trailer:</SectionTitle>
             <iframe
               style={{ padding: "12px 0", width: "100%", height: "300px" }}
@@ -118,7 +125,6 @@ export default function AnimePage() {
           </div>
         </>
       }
-
     </HomeWrapper>
   );
 }

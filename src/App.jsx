@@ -4,7 +4,7 @@ import SignIn from "./pages/SignIn/SignIn";
 import Login from "./pages/Login/Login";
 import Home from "./pages/Home/Home";
 import AnimePage from "./pages/AnimePage/AnimePage";
-function App() {
+export function App() {
   return (
     <>
       <Router>
@@ -20,4 +20,3 @@ function App() {
   );
 }
 
-export default App;
