@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 import styled from "styled-components";
+
 import {
   useEpisodeData,
   useAnimeEpisodes,
@@ -9,6 +10,7 @@ import {
 import { BsFillArrowLeftCircleFill } from "react-icons/bs";
 import { IconContext } from "react-icons";
 import { EpisodesSectionSkeleton, TitleSectionSkeleton } from "../../componets/utils/shimmers/AnimePageSkeleton";
+import AnimePageTabBar from "./AnimePageTabBar";
 
 export default function AnimePage() {
   const location = useLocation();
@@ -18,6 +20,7 @@ export default function AnimePage() {
   const { episodeData, episodeDataLoading } = useEpisodeData();
   const [episodesData, setEpisodesData] = useState([]);
   const [animeData, setAnimeData] = useState();
+
 
   useEffect(() => {
     animeInfo(location.state.id).then((data) => setAnimeData(data));
@@ -59,19 +62,18 @@ export default function AnimePage() {
       <DescriptionSection>
         <p>Rating: {formatRating(animeData?.averageRating)}</p>
         <p>{animeData?.ageRatingGuide}</p>
-        <p style={{ fontSize: "14px", paddingTop: "8px" }}>
+        <div style={{ fontSize: "14px", paddingTop: "8px" }}>
           <div>{descriptionContent}{extraContent}
             <span style={{ fontWeight: "bold" }} onClick={() => setReadMore(!readMore)}>{descriptionButton}</span>
           </div>
-        </p>
+        </div>
       </DescriptionSection></>
   }
 
   function TrailerSection() {
     return <>
-      <SectionTitle>Trailer:</SectionTitle>
       <iframe
-        style={{ padding: "12px 0", width: "100%", height: "300px" }}
+        style={{ width: "100%", height: "300px" }}
         src={`https://www.youtube.com/embed/${animeData?.youtubeVideoId}`}
         title={`${animeData?.canonicalTitle} - Main Trailer`}
         allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
@@ -90,59 +92,69 @@ export default function AnimePage() {
           />
           <div style={{ padding: "0 12px" }}>
             <TitleSection />
-            <TrailerSection />
+            <AnimePageTabBar
+              firstContent={<EpisodesSection isLoading={episodeDataLoading} data={episodesData} />}
+              secondContet={<TrailerSection />}
+            />
           </div>
         </>
       }
-      {episodeDataLoading ? <EpisodesSectionSkeleton /> : <div>
-        <SectionTitle padding={"12px 0 12px 12px"}>Episodes:</SectionTitle>
-        {episodesData
-          .sort((a, b) => a.id - b.id)
-          .map((e) => {
-            const anime = e.attributes
-            if (anime.thumbnail)
-              return (
-                <EpisodeContainer key={e.id}>
-                  <Thumbnail
-                    coverImage={
-                      anime.thumbnail?.tiny ??
-                      anime.thumbnail?.original
-                    }
-                    height={
-                      anime.thumbnail?.meta.dimensions.tiny?.height
-                    }
-                    width={anime.thumbnail?.meta.dimensions.tiny?.width}
-                  ></Thumbnail>
-                  <EpisodeDescription>
-                    <div
-                      style={{
-                        fontSize: "14px",
-                        lineHeight: "16px",
-                        fontWeight: "bold",
-                        paddingBottom: "8px",
-                      }}
-                    >
-                      {anime.canonicalTitle?.length > 40
-                        ? `${anime.canonicalTitle?.substring(0, 40)}...`
-                        : anime?.canonicalTitle}
-                    </div>
-                    <div
-                      style={{
-                        width: "100%",
-                        fontSize: "12px",
-                        lineHeight: "16px",
-                      }}
-                    >{` ${anime.description?.substring(
-                      0,
-                      124 - anime.canonicalTitle?.length
-                    )}...`}</div>
-                  </EpisodeDescription>
-                </EpisodeContainer>
-              );
-          })}</div>}
+
     </HomeWrapper>
   );
 }
+
+function EpisodesSection({ isLoading, data }) {
+  return isLoading ? <EpisodesSectionSkeleton /> :
+    <div>
+      {data
+        .sort((a, b) => a.id - b.id)
+        .map((e) => {
+          const anime = e.attributes
+          if (anime.thumbnail)
+            return (
+              <EpisodeContainer key={e.id}>
+                <Thumbnail
+                  coverImage={
+                    anime.thumbnail?.tiny ??
+                    anime.thumbnail?.original
+                  }
+                  height={
+                    anime.thumbnail?.meta.dimensions.tiny?.height
+                  }
+                  width={anime.thumbnail?.meta.dimensions.tiny?.width}
+                ></Thumbnail>
+                <EpisodeDescription>
+                  <div
+                    style={{
+                      fontSize: "14px",
+                      lineHeight: "16px",
+                      fontWeight: "bold",
+                      paddingBottom: "8px",
+                    }}
+                  >
+                    {anime.canonicalTitle?.length > 40
+                      ? `${anime.canonicalTitle?.substring(0, 40)}...`
+                      : anime?.canonicalTitle}
+                  </div>
+                  <div
+                    style={{
+                      width: "100%",
+                      fontSize: "12px",
+                      lineHeight: "16px",
+                    }}
+                  >{` ${anime.description?.substring(
+                    0,
+                    124 - anime.canonicalTitle?.length
+                  )}...`}</div>
+                </EpisodeDescription>
+              </EpisodeContainer>
+            );
+        })}
+    </div>
+}
+
+
 
 const HomeWrapper = styled.div`
   display: flex;
@@ -181,7 +193,6 @@ const DescriptionSection = styled.div`
 const EpisodeContainer = styled.div`
   display: flex;
   flex-direction: row;
-  padding: 0 12px;
 `;
 
 const EpisodeDescription = styled.div`
