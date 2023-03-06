@@ -24,7 +24,7 @@ export default function Home() {
     categories.FANTASY,
     sorting.FAVORITES
   );
-  console.log(fantasyCategory);
+
   const actionCategory = useCategoryList(categories.ROMANCE, sorting.AVERAGE);
   const romanceCategory = useCategoryList(categories.DRAMA, sorting.AVERAGE);
 
