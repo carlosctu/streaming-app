@@ -46,6 +46,12 @@ export default function AnimePage() {
   }
 
   function TitleSection() {
+    const description = animeData?.description
+    const [readMore, setReadMore] = useState(false)
+    const descriptionButton = readMore ? " read less" : "... read more"
+    const descriptionContent = description?.split(`.`)[0] ?? ''
+    const extraContent = readMore ? description?.split(`(`)[0].substring(descriptionContent.length) : ''
+
     return <>
       <div style={{ fontSize: "24px", fontWeight: "bold" }}>
         {location.state.title}
@@ -54,7 +60,9 @@ export default function AnimePage() {
         <p>Rating: {formatRating(animeData?.averageRating)}</p>
         <p>{animeData?.ageRatingGuide}</p>
         <p style={{ fontSize: "14px", paddingTop: "8px" }}>
-          {animeData?.description.split(`(`)[0]}
+          <div>{descriptionContent}{extraContent}
+            <span style={{ fontWeight: "bold" }} onClick={() => setReadMore(!readMore)}>{descriptionButton}</span>
+          </div>
         </p>
       </DescriptionSection></>
   }
@@ -83,54 +91,55 @@ export default function AnimePage() {
           <div style={{ padding: "0 12px" }}>
             <TitleSection />
             <TrailerSection />
-            {episodeDataLoading ? <EpisodesSectionSkeleton /> : <>
-              <SectionTitle padding={"0 0 12px 0"}>Episodes:</SectionTitle>
-              {episodesData
-                .sort((a, b) => a.id - b.id)
-                .map((e) => {
-                  if (e.attributes.thumbnail)
-                    return (
-                      <EpisodeContainer key={e.id}>
-                        <Thumbnail
-                          coverImage={
-                            e.attributes.thumbnail?.tiny ??
-                            e.attributes.thumbnail?.original
-                          }
-                          height={
-                            e.attributes.thumbnail?.meta.dimensions.tiny?.height
-                          }
-                          width={e.attributes.thumbnail?.meta.dimensions.tiny?.width}
-                        ></Thumbnail>
-                        <EpisodeDescription>
-                          <div
-                            style={{
-                              fontSize: "14px",
-                              lineHeight: "16px",
-                              fontWeight: "bold",
-                              paddingBottom: "8px",
-                            }}
-                          >
-                            {e.attributes.canonicalTitle?.length > 40
-                              ? `${e.attributes.canonicalTitle?.substring(0, 40)}...`
-                              : e.attributes?.canonicalTitle}
-                          </div>
-                          <div
-                            style={{
-                              width: "100%",
-                              fontSize: "12px",
-                              lineHeight: "16px",
-                            }}
-                          >{` ${e.attributes.description?.substring(
-                            0,
-                            124 - e.attributes.canonicalTitle?.length
-                          )}...`}</div>
-                        </EpisodeDescription>
-                      </EpisodeContainer>
-                    );
-                })}</>}
           </div>
         </>
       }
+      {episodeDataLoading ? <EpisodesSectionSkeleton /> : <div>
+        <SectionTitle padding={"12px 0 12px 12px"}>Episodes:</SectionTitle>
+        {episodesData
+          .sort((a, b) => a.id - b.id)
+          .map((e) => {
+            const anime = e.attributes
+            if (anime.thumbnail)
+              return (
+                <EpisodeContainer key={e.id}>
+                  <Thumbnail
+                    coverImage={
+                      anime.thumbnail?.tiny ??
+                      anime.thumbnail?.original
+                    }
+                    height={
+                      anime.thumbnail?.meta.dimensions.tiny?.height
+                    }
+                    width={anime.thumbnail?.meta.dimensions.tiny?.width}
+                  ></Thumbnail>
+                  <EpisodeDescription>
+                    <div
+                      style={{
+                        fontSize: "14px",
+                        lineHeight: "16px",
+                        fontWeight: "bold",
+                        paddingBottom: "8px",
+                      }}
+                    >
+                      {anime.canonicalTitle?.length > 40
+                        ? `${anime.canonicalTitle?.substring(0, 40)}...`
+                        : anime?.canonicalTitle}
+                    </div>
+                    <div
+                      style={{
+                        width: "100%",
+                        fontSize: "12px",
+                        lineHeight: "16px",
+                      }}
+                    >{` ${anime.description?.substring(
+                      0,
+                      124 - anime.canonicalTitle?.length
+                    )}...`}</div>
+                  </EpisodeDescription>
+                </EpisodeContainer>
+              );
+          })}</div>}
     </HomeWrapper>
   );
 }
@@ -156,7 +165,7 @@ const Thumbnail = styled.div`
   background-image: url(${(props) => props.coverImage});
   background-size: cover;
   background-repeat: no-repeat;
-  height: ${(props) => `${props.height}px`};
+  height: ${(props) => `${props.height ?? 90}px`};
   width: 50%;
   margin-bottom: 8px;
 `;
@@ -172,6 +181,7 @@ const DescriptionSection = styled.div`
 const EpisodeContainer = styled.div`
   display: flex;
   flex-direction: row;
+  padding: 0 12px;
 `;
 
 const EpisodeDescription = styled.div`

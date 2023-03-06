@@ -4,19 +4,19 @@ import { Skeleton } from "./Skeleton";
 export function CarrouselSkeleton() {
     return <CarrouselWrapper>
         {Array.apply(null, { length: 4 }).map((_, index) =>
-            <div style={{
+            <div key={index} style={{
                 display: "flex",
                 flexDirection: "column",
                 rowGap: "12px",
                 scrollSnapAlign: "start"
             }}>
-                <Skeleton key={index} style={{
+                <Skeleton style={{
                     height: "240px",
                     width: "160px",
                     borderTopLeftRadius: "12px",
                     borderTopRightRadius: "12px",
                 }} />
-                <Skeleton key={index} style={{
+                <Skeleton style={{
                     height: "20px",
                     width: "160px"
                 }} />
