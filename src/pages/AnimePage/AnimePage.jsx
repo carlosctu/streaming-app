@@ -71,14 +71,12 @@ export default function AnimePage() {
   }
 
   function TrailerSection() {
-    return <>
-      <iframe
-        style={{ width: "100%", height: "300px" }}
-        src={`https://www.youtube.com/embed/${animeData?.youtubeVideoId}`}
-        title={`${animeData?.canonicalTitle} - Main Trailer`}
-        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
-      ></iframe>
-    </>
+    return <iframe
+      style={{ width: "100%", height: "300px" }}
+      src={`https://www.youtube.com/embed/${animeData?.youtubeVideoId}`}
+      title={`${animeData?.canonicalTitle} - Main Trailer`}
+      allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+    ></iframe>
   }
 
   return (
@@ -94,7 +92,7 @@ export default function AnimePage() {
             <TitleSection />
             <TabBar
               firstContent={<EpisodesSection isLoading={episodeDataLoading} data={episodesData} />}
-              secondContet={< TrailerSection />}
+              secondContent={<TrailerSection />}
             />
           </div>
         </>
