@@ -19,8 +19,6 @@ export default function AnimePage() {
   const [episodesData, setEpisodesData] = useState([]);
   const [animeData, setAnimeData] = useState();
 
-  console.log(animeEpisodesLoading)
-
   useEffect(() => {
     animeInfo(location.state.id).then((data) => setAnimeData(data));
     animeEpisodes(location.state.id.split("anime/")[1]).then((data) => {
@@ -77,8 +75,6 @@ export default function AnimePage() {
               {episodesData
                 .sort((a, b) => a.id - b.id)
                 .map((e) => {
-                  console.log(e.attributes.thumbnail?.meta.dimensions.tiny?.height)
-                  console.log(e.attributes.thumbnail?.meta.dimensions.tiny?.width)
                   if (e.attributes.thumbnail)
                     return (
                       <EpisodeContainer key={e.id}>
