@@ -8,14 +8,14 @@ import {
 } from "../../hooks/api/useAnime";
 import { BsFillArrowLeftCircleFill } from "react-icons/bs";
 import { IconContext } from "react-icons";
-import { TitleSectionSkeleton } from "../../componets/utils/shimmers/AnimePageSkeleton";
+import { EpisodesSectionSkeleton, TitleSectionSkeleton } from "../../componets/utils/shimmers/AnimePageSkeleton";
 
 export default function AnimePage() {
   const location = useLocation();
   const navigate = useNavigate();
   const { animeInfo } = useAnimeInfo();
   const { animeEpisodes, animeEpisodesLoading } = useAnimeEpisodes();
-  const { episodeData } = useEpisodeData();
+  const { episodeData, episodeDataLoading } = useEpisodeData();
   const [episodesData, setEpisodesData] = useState([]);
   const [animeData, setAnimeData] = useState();
 
@@ -72,50 +72,53 @@ export default function AnimePage() {
               title={`${animeData?.canonicalTitle} - Main Trailer`}
               allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
             ></iframe>
-            <SectionTitle padding={"0 0 12px 0"}>Episodes:</SectionTitle>
-            {episodesData
-              .sort((a, b) => a.id - b.id)
-              .map((e) => {
-                if (e.attributes.thumbnail)
-                  return (
-                    <EpisodeContainer key={e.id}>
-                      <Thumbnail
-                        coverImage={
-                          e.attributes.thumbnail?.tiny ??
-                          e.attributes.thumbnail?.original
-                        }
-                        height={
-                          e.attributes.thumbnail?.meta.dimensions.tiny?.height
-                        }
-                        width={e.attributes.thumbnail?.meta.dimensions.tiny?.width}
-                      ></Thumbnail>
-                      <EpisodeDescription>
-                        <div
-                          style={{
-                            fontSize: "14px",
-                            lineHeight: "16px",
-                            fontWeight: "bold",
-                            paddingBottom: "8px",
-                          }}
-                        >
-                          {e.attributes.canonicalTitle?.length > 40
-                            ? `${e.attributes.canonicalTitle?.substring(0, 40)}...`
-                            : e.attributes?.canonicalTitle}
-                        </div>
-                        <div
-                          style={{
-                            width: "100%",
-                            fontSize: "12px",
-                            lineHeight: "16px",
-                          }}
-                        >{` ${e.attributes.description?.substring(
-                          0,
-                          124 - e.attributes.canonicalTitle?.length
-                        )}...`}</div>
-                      </EpisodeDescription>
-                    </EpisodeContainer>
-                  );
-              })}
+            {episodeDataLoading ? <EpisodesSectionSkeleton /> : <>
+              <SectionTitle padding={"0 0 12px 0"}>Episodes:</SectionTitle>
+              {episodesData
+                .sort((a, b) => a.id - b.id)
+                .map((e) => {
+                  console.log(e.attributes.thumbnail?.meta.dimensions.tiny?.height)
+                  console.log(e.attributes.thumbnail?.meta.dimensions.tiny?.width)
+                  if (e.attributes.thumbnail)
+                    return (
+                      <EpisodeContainer key={e.id}>
+                        <Thumbnail
+                          coverImage={
+                            e.attributes.thumbnail?.tiny ??
+                            e.attributes.thumbnail?.original
+                          }
+                          height={
+                            e.attributes.thumbnail?.meta.dimensions.tiny?.height
+                          }
+                          width={e.attributes.thumbnail?.meta.dimensions.tiny?.width}
+                        ></Thumbnail>
+                        <EpisodeDescription>
+                          <div
+                            style={{
+                              fontSize: "14px",
+                              lineHeight: "16px",
+                              fontWeight: "bold",
+                              paddingBottom: "8px",
+                            }}
+                          >
+                            {e.attributes.canonicalTitle?.length > 40
+                              ? `${e.attributes.canonicalTitle?.substring(0, 40)}...`
+                              : e.attributes?.canonicalTitle}
+                          </div>
+                          <div
+                            style={{
+                              width: "100%",
+                              fontSize: "12px",
+                              lineHeight: "16px",
+                            }}
+                          >{` ${e.attributes.description?.substring(
+                            0,
+                            124 - e.attributes.canonicalTitle?.length
+                          )}...`}</div>
+                        </EpisodeDescription>
+                      </EpisodeContainer>
+                    );
+                })}</>}
           </div>
         </>
       }
