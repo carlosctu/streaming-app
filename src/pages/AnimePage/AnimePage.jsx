@@ -59,6 +59,18 @@ export default function AnimePage() {
       </DescriptionSection></>
   }
 
+  function TrailerSection() {
+    return <>
+      <SectionTitle>Trailer:</SectionTitle>
+      <iframe
+        style={{ padding: "12px 0", width: "100%", height: "300px" }}
+        src={`https://www.youtube.com/embed/${animeData?.youtubeVideoId}`}
+        title={`${animeData?.canonicalTitle} - Main Trailer`}
+        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+      ></iframe>
+    </>
+  }
+
   return (
     <HomeWrapper>
       {animeEpisodesLoading ? <TitleSectionSkeleton /> :
@@ -70,13 +82,7 @@ export default function AnimePage() {
           />
           <div style={{ padding: "0 12px" }}>
             <TitleSection />
-            <SectionTitle>Trailer:</SectionTitle>
-            <iframe
-              style={{ padding: "12px 0", width: "100%", height: "300px" }}
-              src={`https://www.youtube.com/embed/${animeData?.youtubeVideoId}`}
-              title={`${animeData?.canonicalTitle} - Main Trailer`}
-              allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
-            ></iframe>
+            <TrailerSection />
             {episodeDataLoading ? <EpisodesSectionSkeleton /> : <>
               <SectionTitle padding={"0 0 12px 0"}>Episodes:</SectionTitle>
               {episodesData
