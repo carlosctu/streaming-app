@@ -91,8 +91,10 @@ export default function AnimePage() {
           <div style={{ padding: "0 12px" }}>
             <TitleSection />
             <TabBar
-              firstContent={<EpisodesSection isLoading={episodeDataLoading} data={episodesData} />}
-              secondContent={<TrailerSection />}
+              tabContent={[
+                { title: 'Episodes', content: <EpisodesSection isLoading={episodeDataLoading} data={episodesData} /> },
+                { title: 'Trailer', content: <TrailerSection /> }
+              ]}
             />
           </div>
         </>

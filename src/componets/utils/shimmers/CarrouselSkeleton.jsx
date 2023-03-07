@@ -3,7 +3,7 @@ import { Skeleton } from "./Skeleton";
 
 export function CarrouselSkeleton() {
     return <CarrouselWrapper>
-        {Array.apply(null, { length: 4 }).map((_, index) =>
+        {Array.apply(null, { length: 6 }).map((_, index) =>
             <div key={index} style={{
                 display: "flex",
                 flexDirection: "column",
