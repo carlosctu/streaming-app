@@ -10,7 +10,7 @@ import {
 import { BsFillArrowLeftCircleFill } from "react-icons/bs";
 import { IconContext } from "react-icons";
 import { EpisodesSectionSkeleton, TitleSectionSkeleton } from "../../componets/utils/shimmers/AnimePageSkeleton";
-import TabBar from "./TabBar";
+import TabBar from "../../componets/TabBar/TabBar";
 
 export default function AnimePage() {
   const location = useLocation();
