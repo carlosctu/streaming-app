@@ -1,7 +1,8 @@
 import { IconContext } from "react-icons";
 import styled from "styled-components";
+import { ButtonIconProps } from "./types/types";
 
-export default function ButtonIcon(props) {
+export default function ButtonIcon(props: ButtonIconProps) {
   return (
     <IconContext.Provider value={{ size: props.size, color: props.color }}>
       <IconContainer onClick={props.onClick}>{props.children}</IconContainer>
