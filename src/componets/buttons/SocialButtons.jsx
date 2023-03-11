@@ -1,5 +1,6 @@
 import google from "../../assets/google.png";
 import facebook from "../../assets/facebook.png";
+import github from "../../assets/github.jpg";
 import { ButtonContainer } from "./ButtonContainer";
 import styled from "styled-components";
 
@@ -9,13 +10,31 @@ export default function SocialButtons() {
       description: "Continue with Google",
       logoSrc: google,
       logoAlt: "google-login",
+      onClick: () => { }
     },
     {
       description: "Continue with Facebook",
       logoSrc: facebook,
       logoAlt: "facebook-login",
+      onClick: () => { }
+
+    },
+    {
+      description: "Continue with Github",
+      logoSrc: github,
+      logoAlt: "github-login",
+      onClick: () => redirectToGithub()
+
     },
   ];
+
+  function redirectToGithub() {
+    const GITHUB_URL = 'https://github.com/login/oauth/authorize';
+    const CLIENT_ID = '3dd1f1992cc85edf6383';
+    const authURL = `${GITHUB_URL}?client_id=${CLIENT_ID}`;
+    window.location.href = authURL;
+  }
+
   return (
     <ButtonsWrapper>
       {socialButtons.map((btn, index) => (
@@ -25,6 +44,7 @@ export default function SocialButtons() {
           logoSrc={btn.logoSrc}
           logoAlt={btn.logoAlt}
           backgroundColor={btn.backgroundColor}
+          onClick={btn.onClick}
         />
       ))}
     </ButtonsWrapper>
