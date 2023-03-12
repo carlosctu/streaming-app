@@ -4,6 +4,7 @@ import SignIn from "./pages/SignIn/SignIn";
 import Login from "./pages/Login/Login";
 import Home from "./pages/Home/Home";
 import AnimePage from "./pages/AnimePage/AnimePage";
+
 export function App() {
   return (
     <>
