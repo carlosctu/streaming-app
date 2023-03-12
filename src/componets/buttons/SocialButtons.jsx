@@ -30,7 +30,7 @@ export default function SocialButtons() {
 
   function redirectToGithub() {
     const GITHUB_URL = 'https://github.com/login/oauth/authorize';
-    const authURL = `${GITHUB_URL}?client_id=${CLIENT_ID}`;
+    const authURL = `${GITHUB_URL}?client_id=${import.meta.env.VITE_GITHUB_ID}`;
     window.location.href = authURL;
   }
 
