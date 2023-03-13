@@ -3,9 +3,7 @@ import facebook from "../../assets/facebook.png";
 import github from "../../assets/github.jpg";
 import { ButtonContainer } from "./ButtonContainer";
 import styled from "styled-components";
-import { GithubAuthProvider, signInWithPopup } from "firebase/auth";
-import { getAuth, getRedirectResult, signInWithRedirect } from "firebase/auth";
-import { auth } from "../../services/FirebaseConfig";
+import { handleFacebookSignIn, handleGithubSignIn, handleGoogleSignIn } from "../../services/firebase/FirebaseAuth";
 
 
 export default function SocialButtons() {
@@ -14,33 +12,21 @@ export default function SocialButtons() {
       description: "Continue with Google",
       logoSrc: google,
       logoAlt: "google-login",
-      onClick: () => { }
+      onClick: () => handleGoogleSignIn()
     },
     {
       description: "Continue with Facebook",
       logoSrc: facebook,
       logoAlt: "facebook-login",
-      onClick: () => { }
-
+      onClick: () => handleFacebookSignIn()
     },
     {
       description: "Continue with Github",
       logoSrc: github,
       logoAlt: "github-login",
       onClick: () => handleGithubSignIn()
-
     },
   ];
-
-  async function handleGithubSignIn() {
-    const provider = new GithubAuthProvider();
-
-    signInWithPopup(auth, provider).then((result) => {
-      console.log(result)
-    }).catch((error) => {
-      console.log(error)
-    })
-  }
 
   return (
     <ButtonsWrapper>
