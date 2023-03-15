@@ -9,29 +9,16 @@ import { useState, useEffect } from "react";
 import SocialButtons from "../../componets/buttons/SocialButtons";
 import ButtonIcon from "../../componets/buttons/ButtonIcon";
 import { ButtonContainer } from "../../componets/buttons/ButtonContainer";
-import useGithubOAuth from "../../hooks/api/useGithubOAuth";
 
 export default function SignIn() {
   const navigate = useNavigate();
   const [play, setPlay] = useState(false);
-  const { githubOAuthLoading, githubOAuth
-  } = useGithubOAuth();
 
   function setDataAndNavigate(userData) {
     //TODO: add setUserData function to made de signIn
     // setUserData(userData);
     toast('Login realizado com sucesso!');
     navigate('/dashboard');
-  }
-
-  function getQueryParams() {
-    const queryParamsString = window.location.search.substring(1);
-    const queryParams = queryParamsString.split('&').reduce((acc, curr) => {
-      const [key, value] = curr.split('=');
-      acc[key] = value;
-      return acc;
-    }, {});
-    return queryParams;
   }
 
   useEffect(() => {

@@ -17,6 +17,9 @@ import AccountCircleIcon from "@mui/icons-material/AccountCircle";
 import KeyIcon from "@mui/icons-material/Key";
 import { Controller, useForm } from "react-hook-form";
 import useSignUp from "../../hooks/api/useSignUp";
+import { useCreateUserWithEmailAndPassword } from 'react-firebase-hooks/auth';
+import { auth } from "../../services/firebase/FirebaseConfig";
+import { toast } from "react-toastify";
 
 export default function SignUp() {
   const navigate = useNavigate();
@@ -30,6 +33,13 @@ export default function SignUp() {
   });
   const [notSamePassword, setNotSamePassword] = useState(false);
   const { signUpLoading, signUp } = useSignUp();
+  const [
+    createUserWithEmailAndPassword,
+    user,
+    loading,
+    error,
+  ] = useCreateUserWithEmailAndPassword(auth);
+
   const handleSubmit = async (event) => {
     event.preventDefault();
     setNotSamePassword(false);
@@ -39,12 +49,22 @@ export default function SignUp() {
     if (password != confirmPassword) {
       return setNotSamePassword(true);
     }
-    try {
-      await signUp({ name, email, password });
-      navigate('/Login')
-    } catch (error) {
-      console.log(error);
+
+    createUserWithEmailAndPassword(email, password).then((value) => console.log(value)).catch((error) => console.log(error))
+    // if (!loading) {
+    // navigate('/Login')
+    // }
+
+    if (error) {
+      console.log(error)
+      toast("Erro ao fazer sign up")
     }
+
+    // try {
+    //   await signUp({ name, email, password });
+    // } catch (error) {
+    //   console.log(error);
+    // }
   };
 
   const handleChange = (event) => {
@@ -181,7 +201,7 @@ export default function SignUp() {
           }}
         >
           <p>Already have an account?</p>
-          <StyledLink to="/Login"> Sign in.</StyledLink>
+          <StyledLink to="/Login"> {loading ? 'Sign in.' : 'Carregando...'}</StyledLink>
         </div>
       </PageWrapper>
     </>
