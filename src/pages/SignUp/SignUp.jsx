@@ -14,9 +14,10 @@ import ButtonIcon from "../../componets/buttons/ButtonIcon";
 import { ButtonContainer } from "../../componets/buttons/ButtonContainer";
 import SocialButtons from "../../componets/buttons/SocialButtons";
 import KeyIcon from "@mui/icons-material/Key";
-import { useCreateUserWithEmailAndPassword } from 'react-firebase-hooks/auth';
-import { auth } from "../../services/firebase/FirebaseConfig";
 import { toast } from 'react-toastify';
+import { createUserWithEmailAndPassword } from "firebase/auth";
+import { auth } from "../../services/firebase/FirebaseConfig";
+
 
 export default function SignUp() {
   const navigate = useNavigate();
@@ -28,27 +29,25 @@ export default function SignUp() {
     showConfirmPassword: false,
   });
   const [notSamePassword, setNotSamePassword] = useState(false);
-  const [
-    createUserWithEmailAndPassword,
-    user,
-    loading,
-    error,
-  ] = useCreateUserWithEmailAndPassword(auth);
 
   const handleSubmit = async (event) => {
     event.preventDefault();
 
     const { email, password, confirmPassword } = values;
-
     setNotSamePassword(false);
 
     if (password != confirmPassword) {
       return setNotSamePassword(true);
     }
 
-    createUserWithEmailAndPassword(email, password)
-
-    console.log(user)
+    createUserWithEmailAndPassword(auth, email, password)
+      .then((_) => navigate('/Login'))
+      .catch((error) => {
+        if (error.code === "auth/email-already-in-use") {
+          return toast("Usuário já cadastrado")
+        }
+        return toast("Favor tente novamente em alguns segundos")
+      })
   };
 
 
@@ -62,17 +61,6 @@ export default function SignUp() {
       [passwordType]: !values[passwordType],
     });
   };
-
-  if (error) {
-    if (error.code === "auth/email-already-in-use") {
-      toast("Usuário já cadastrado")
-    }
-    toast("Favor tente novamente em alguns segundos")
-  }
-
-  if (user && !loading) {
-    navigate('/Login')
-  }
 
   return (
     <>
@@ -153,7 +141,7 @@ export default function SignUp() {
             height="42px"
             width="95%"
             backgroundColor="#D93A41"
-            description={loading ? 'Carregando...' : 'Sign in'}
+            description='Sign in'
             onClick={handleSubmit}
           />
         </Box>
