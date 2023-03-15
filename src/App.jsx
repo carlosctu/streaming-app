@@ -4,6 +4,8 @@ import SignIn from "./pages/SignIn/SignIn";
 import Login from "./pages/Login/Login";
 import Home from "./pages/Home/Home";
 import AnimePage from "./pages/AnimePage/AnimePage";
+import { ToastContainer } from "react-toastify";
+import 'react-toastify/dist/ReactToastify.min.css';
 
 export function App() {
   return (
@@ -17,6 +19,7 @@ export function App() {
           <Route path="/animePage" element={<AnimePage />} />
         </Routes>
       </Router>
+      <ToastContainer />
     </>
   );
 }

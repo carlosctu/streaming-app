@@ -13,18 +13,14 @@ import AppBar from "../../componets/AppBar";
 import ButtonIcon from "../../componets/buttons/ButtonIcon";
 import { ButtonContainer } from "../../componets/buttons/ButtonContainer";
 import SocialButtons from "../../componets/buttons/SocialButtons";
-import AccountCircleIcon from "@mui/icons-material/AccountCircle";
 import KeyIcon from "@mui/icons-material/Key";
-import { Controller, useForm } from "react-hook-form";
-import useSignUp from "../../hooks/api/useSignUp";
 import { useCreateUserWithEmailAndPassword } from 'react-firebase-hooks/auth';
 import { auth } from "../../services/firebase/FirebaseConfig";
-import { toast } from "react-toastify";
+import { toast } from 'react-toastify';
 
 export default function SignUp() {
   const navigate = useNavigate();
   const [values, setValues] = useState({
-    name: "",
     email: "",
     password: "",
     confirmPassword: "",
@@ -32,7 +28,6 @@ export default function SignUp() {
     showConfirmPassword: false,
   });
   const [notSamePassword, setNotSamePassword] = useState(false);
-  const { signUpLoading, signUp } = useSignUp();
   const [
     createUserWithEmailAndPassword,
     user,
@@ -42,30 +37,20 @@ export default function SignUp() {
 
   const handleSubmit = async (event) => {
     event.preventDefault();
-    setNotSamePassword(false);
 
-    const { name, email, password, confirmPassword } = values;
+    const { email, password, confirmPassword } = values;
+
+    setNotSamePassword(false);
 
     if (password != confirmPassword) {
       return setNotSamePassword(true);
     }
 
-    createUserWithEmailAndPassword(email, password).then((value) => console.log(value)).catch((error) => console.log(error))
-    // if (!loading) {
-    // navigate('/Login')
-    // }
+    createUserWithEmailAndPassword(email, password)
 
-    if (error) {
-      console.log(error)
-      toast("Erro ao fazer sign up")
-    }
-
-    // try {
-    //   await signUp({ name, email, password });
-    // } catch (error) {
-    //   console.log(error);
-    // }
+    console.log(user)
   };
+
 
   const handleChange = (event) => {
     setValues({ ...values, [event.target.name]: event.target.value });
@@ -77,6 +62,17 @@ export default function SignUp() {
       [passwordType]: !values[passwordType],
     });
   };
+
+  if (error) {
+    if (error.code === "auth/email-already-in-use") {
+      toast("Usuário já cadastrado")
+    }
+    toast("Favor tente novamente em alguns segundos")
+  }
+
+  if (user && !loading) {
+    navigate('/Login')
+  }
 
   return (
     <>
@@ -104,20 +100,6 @@ export default function SignUp() {
           }}
           autoComplete="off"
         >
-          <InputField>
-            <AccountCircleIcon
-              sx={{ color: "action.active", mr: 1, my: 0.5 }}
-            />
-            <Input
-              id="outlined-error-helper-text"
-              type={"text"}
-              value={values.name}
-              name={"name"}
-              placeholder={"How you want to be called"}
-              onChange={handleChange}
-              style={{ width: "100%" }}
-            />
-          </InputField>
           <InputField>
             <MailOutlineIcon sx={{ color: "action.active", mr: 1, my: 0.5 }} />
             <Input
@@ -171,7 +153,7 @@ export default function SignUp() {
             height="42px"
             width="95%"
             backgroundColor="#D93A41"
-            description="Sign in"
+            description={loading ? 'Carregando...' : 'Sign in'}
             onClick={handleSubmit}
           />
         </Box>
@@ -201,7 +183,7 @@ export default function SignUp() {
           }}
         >
           <p>Already have an account?</p>
-          <StyledLink to="/Login"> {loading ? 'Sign in.' : 'Carregando...'}</StyledLink>
+          <StyledLink to="/Login">Sign in.</StyledLink>
         </div>
       </PageWrapper>
     </>
