@@ -3,41 +3,59 @@ import facebook from "../../assets/facebook.png";
 import github from "../../assets/github.jpg";
 import { ButtonContainer } from "./ButtonContainer";
 import styled from "styled-components";
-import { handleFacebookSignIn, handleGithubSignIn, handleGoogleSignIn } from "../../services/firebase/FirebaseAuth";
+import { UserAuth } from "../../services/firebase/AuthContext";
 
+const providerName = Object.freeze({
+  github: "GITHUB",
+  google: "GMAIL",
+  facebook: "FACEBOOK",
+})
 
 export default function SocialButtons() {
+  const {
+    handleGoogleSignIn,
+    handleGithubSignIn,
+    handleFacebookSignIn
+  } = UserAuth()
+  
   const socialButtons = [
     {
       description: "Continue with Google",
       logoSrc: google,
       logoAlt: "google-login",
-      onClick: () => handleGoogleSignIn()
+      signIn: handleGoogleSignIn
     },
     {
       description: "Continue with Facebook",
       logoSrc: facebook,
       logoAlt: "facebook-login",
-      onClick: () => handleFacebookSignIn()
+      signIn: handleFacebookSignIn
     },
     {
       description: "Continue with Github",
       logoSrc: github,
       logoAlt: "github-login",
-      onClick: () => handleGithubSignIn()
+      signIn: handleGithubSignIn
     },
   ];
 
   return (
     <ButtonsWrapper>
-      {socialButtons.map((btn, index) => (
+      {socialButtons.map((button, index) => (
         <ButtonContainer
           key={index}
-          description={btn.description}
-          logoSrc={btn.logoSrc}
-          logoAlt={btn.logoAlt}
-          backgroundColor={btn.backgroundColor}
-          onClick={btn.onClick}
+          description={button.description}
+          logoSrc={button.logoSrc}
+          logoAlt={button.logoAlt}
+          backgroundColor={button.backgroundColor}
+          onClick={
+            async () => {
+              try {
+                await button.signIn()
+              } catch (error) {
+                console.log(error)
+              }
+            }}
         />
       ))}
     </ButtonsWrapper>

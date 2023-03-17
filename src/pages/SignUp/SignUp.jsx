@@ -7,7 +7,7 @@ import Visibility from "@mui/icons-material/Visibility";
 import VisibilityOff from "@mui/icons-material/VisibilityOff";
 import Input from "@mui/material/Input";
 import { IconButton } from "@mui/material";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import AppBar from "../../componets/AppBar";
 import ButtonIcon from "../../componets/buttons/ButtonIcon";
@@ -17,10 +17,12 @@ import KeyIcon from "@mui/icons-material/Key";
 import { toast } from 'react-toastify';
 import { createUserWithEmailAndPassword } from "firebase/auth";
 import { auth } from "../../services/firebase/FirebaseConfig";
+import { handleEmailSignUp, UserAuth } from "../../services/firebase/AuthContext";
 
 
 export default function SignUp() {
   const navigate = useNavigate();
+  const { user } = UserAuth();
   const [values, setValues] = useState({
     email: "",
     password: "",
@@ -40,14 +42,7 @@ export default function SignUp() {
       return setNotSamePassword(true);
     }
 
-    createUserWithEmailAndPassword(auth, email, password)
-      .then((_) => navigate('/Login'))
-      .catch((error) => {
-        if (error.code === "auth/email-already-in-use") {
-          return toast("Usuário já cadastrado")
-        }
-        return toast("Favor tente novamente em alguns segundos")
-      })
+    handleEmailSignUp(email, password)
   };
 
 
@@ -61,6 +56,12 @@ export default function SignUp() {
       [passwordType]: !values[passwordType],
     });
   };
+
+  useEffect(() => {
+    if (user) {
+      navigate("/Home")
+    }
+  }, [user])
 
   return (
     <>
@@ -147,18 +148,7 @@ export default function SignUp() {
         </Box>
         <HorizontalLineContainer>
           <HorizontalLine />
-          <div
-            style={{
-              display: "flex",
-              justifyContent: "center",
-              width: "500px",
-            }}
-          >
-            or sign up with
-          </div>
-          <HorizontalLine />
         </HorizontalLineContainer>
-        <SocialButtons />
         <div
           style={{
             display: "flex",
