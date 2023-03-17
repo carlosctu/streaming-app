@@ -9,6 +9,7 @@ import 'react-toastify/dist/ReactToastify.min.css';
 import { UserContext } from "./services/context/UserContext";
 import { useState } from "react";
 import { AuthContextProvider } from "./services/firebase/AuthContext";
+import PrivateRoute from "./pages/PrivatePages/PrivateRoute";
 
 export function App() {
   const [user, setUser] = useState(null);
@@ -21,8 +22,16 @@ export function App() {
             <Route path="/" element={<SignIn />} />
             <Route path="/Login" element={<Login />} />
             <Route path="/SignUp" element={<SignUp />} />
-            <Route path="/home" element={<Home />} />
-            <Route path="/animePage" element={<AnimePage />} />
+            <Route path="/home" element={
+              <PrivateRoute>
+                <Home />
+              </PrivateRoute>
+            } />
+            <Route path="/animePage" element={
+              <PrivateRoute>
+                <AnimePage />
+              </PrivateRoute>
+            } />
           </Routes>
         </Router>
         <ToastContainer />

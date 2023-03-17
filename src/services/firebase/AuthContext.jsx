@@ -8,7 +8,7 @@ import {
     signOut,
     onAuthStateChanged
 } from "firebase/auth";
-import { createContext, useContext, useState } from "react";
+import { createContext, useContext, useState, useEffect } from "react";
 
 const AuthContext = createContext();
 
@@ -27,16 +27,16 @@ export const AuthContextProvider = ({ children }) => {
 
     const handleGoogleSignIn = () => {
         const provider = new GoogleAuthProvider();
-        signInWithPopup(auth, provider)
+        return signInWithPopup(auth, provider)
     }
 
     const handleGithubSignIn = () => {
-        const provider = new GoogleAuthProvider();
-        signInWithPopup(auth, provider)
+        const provider = new GithubAuthProvider();
+        return signInWithPopup(auth, provider)
     }
     const handleFacebookSignIn = () => {
-        const provider = new GoogleAuthProvider();
-        signInWithPopup(auth, provider)
+        const provider = new FacebookAuthProvider();
+        return signInWithPopup(auth, provider)
     }
 
     const logOut = () => {
@@ -57,7 +57,8 @@ export const AuthContextProvider = ({ children }) => {
         handleGithubSignIn,
         handleFacebookSignIn,
         logOut,
-        user
+        user,
+        setUser
     }}>
         {children}
     </AuthContext.Provider>

@@ -15,27 +15,28 @@ export default function SocialButtons() {
   const {
     handleGoogleSignIn,
     handleGithubSignIn,
-    handleFacebookSignIn
+    handleFacebookSignIn,
+    setUser
   } = UserAuth()
-  
+
   const socialButtons = [
     {
       description: "Continue with Google",
       logoSrc: google,
       logoAlt: "google-login",
-      signIn: handleGoogleSignIn
+      handleSignIn: handleGoogleSignIn
     },
     {
       description: "Continue with Facebook",
       logoSrc: facebook,
       logoAlt: "facebook-login",
-      signIn: handleFacebookSignIn
+      handleSignIn: handleFacebookSignIn
     },
     {
       description: "Continue with Github",
       logoSrc: github,
       logoAlt: "github-login",
-      signIn: handleGithubSignIn
+      handleSignIn: handleGithubSignIn
     },
   ];
 
@@ -51,7 +52,10 @@ export default function SocialButtons() {
           onClick={
             async () => {
               try {
-                await button.signIn()
+                const data = await button.handleSignIn();
+                console.log(data);
+                setUser(data.user)
+                // await button.signIn()
               } catch (error) {
                 console.log(error)
               }

@@ -9,10 +9,12 @@ import { useState, useEffect } from "react";
 import SocialButtons from "../../componets/buttons/SocialButtons";
 import ButtonIcon from "../../componets/buttons/ButtonIcon";
 import { ButtonContainer } from "../../componets/buttons/ButtonContainer";
+import { UserAuth } from "../../services/firebase/AuthContext";
 
 export default function SignIn() {
   const navigate = useNavigate();
   const [play, setPlay] = useState(false);
+  const { user } = UserAuth();
 
   function setDataAndNavigate(userData) {
     //TODO: add setUserData function to made de signIn
@@ -22,8 +24,11 @@ export default function SignIn() {
   }
 
   useEffect(() => {
+    if (user) {
+      navigate("/Home")
+    }
     setPlay(true);
-  }, []);
+  }, [user]);
 
 
   return (
