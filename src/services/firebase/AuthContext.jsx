@@ -56,15 +56,10 @@ export const AuthContextProvider = ({ children }) => {
 export const UserAuth = () => useContext(AuthContext);
 
 export function handleEmailSignUp(email, password) {
-    // const navigate = useNavigate()
     createUserWithEmailAndPassword(auth, email, password)
         .then((_) => {
-            console.log("Caiu no create user")
-            // navigate('/Login')
         })
         .catch((error) => {
-            console.log("deu error")
-            console.log(error)
             if (error.code === "auth/email-already-in-use") {
                 return toast("Usuário já cadastrado")
             }
