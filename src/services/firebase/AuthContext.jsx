@@ -25,17 +25,8 @@ export const AuthContextProvider = ({ children }) => {
 
     const [user, setUser] = useState({})
 
-    const handleGoogleSignIn = () => {
-        const provider = new GoogleAuthProvider();
-        return signInWithPopup(auth, provider)
-    }
-
-    const handleGithubSignIn = () => {
-        const provider = new GithubAuthProvider();
-        return signInWithPopup(auth, provider)
-    }
-    const handleFacebookSignIn = () => {
-        const provider = new FacebookAuthProvider();
+    const handleSignInWithPopUp = (providerName) => {
+        const provider = getProvider(providerName)
         return signInWithPopup(auth, provider)
     }
 
@@ -53,9 +44,7 @@ export const AuthContextProvider = ({ children }) => {
 
 
     return <AuthContext.Provider value={{
-        handleGoogleSignIn,
-        handleGithubSignIn,
-        handleFacebookSignIn,
+        handleSignInWithPopUp,
         logOut,
         user,
         setUser
@@ -65,21 +54,6 @@ export const AuthContextProvider = ({ children }) => {
 }
 
 export const UserAuth = () => useContext(AuthContext);
-
-
-
-
-
-export function handleSignUpWithPopUp(signUpWith) {
-    const provider = getProvider(signUpWith)
-    console.log(provider)
-    signInWithPopup(auth, provider).then((result) => {
-        console.log(result)
-        // console.log("Olá")
-    }).catch((error) => {
-        console.log(error);
-    })
-}
 
 export function handleEmailSignUp(email, password) {
     // const navigate = useNavigate()

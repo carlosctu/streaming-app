@@ -1,10 +1,13 @@
 import styled from "styled-components";
+import { UserAuth } from "../../services/firebase/AuthContext";
 
 export function ButtonContainer(props) {
+  const {logOut}  = UserAuth()
   return (
     <ButtonWrapper
       color={props.backgroundColor ?? "#ffffff"}
       onClick={props.onClick}
+      // onClick={() => logOut()}
       borderRadius={props.borderRadius ?? true}
       style={{ height: props.height, width: props.width }}
     >

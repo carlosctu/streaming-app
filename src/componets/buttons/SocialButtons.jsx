@@ -4,6 +4,7 @@ import github from "../../assets/github.jpg";
 import { ButtonContainer } from "./ButtonContainer";
 import styled from "styled-components";
 import { UserAuth } from "../../services/firebase/AuthContext";
+import { toast } from "react-toastify";
 
 const providerName = Object.freeze({
   github: "GITHUB",
@@ -13,9 +14,7 @@ const providerName = Object.freeze({
 
 export default function SocialButtons() {
   const {
-    handleGoogleSignIn,
-    handleGithubSignIn,
-    handleFacebookSignIn,
+    handleSignInWithPopUp,
     setUser
   } = UserAuth()
 
@@ -24,19 +23,22 @@ export default function SocialButtons() {
       description: "Continue with Google",
       logoSrc: google,
       logoAlt: "google-login",
-      handleSignIn: handleGoogleSignIn
+      provider: providerName.google,
+      handleSignIn: handleSignInWithPopUp
     },
     {
       description: "Continue with Facebook",
       logoSrc: facebook,
       logoAlt: "facebook-login",
-      handleSignIn: handleFacebookSignIn
+      provider: providerName.facebook,
+      handleSignIn: handleSignInWithPopUp
     },
     {
       description: "Continue with Github",
       logoSrc: github,
       logoAlt: "github-login",
-      handleSignIn: handleGithubSignIn
+      provider: providerName.github,
+      handleSignIn: handleSignInWithPopUp
     },
   ];
 
@@ -52,12 +54,14 @@ export default function SocialButtons() {
           onClick={
             async () => {
               try {
-                const data = await button.handleSignIn();
-                console.log(data);
+                const data = await button.handleSignIn(button.provider);
                 setUser(data.user)
-                // await button.signIn()
               } catch (error) {
-                console.log(error)
+                const verifiedProvider = error.customData._tokenResponse.verifiedProvider;
+                if (verifiedProvider.includes('google.com')) {
+                  return toast('Your account was created with Google')
+                }
+                return toast('Please try again later.');
               }
             }}
         />
